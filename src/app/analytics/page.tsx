@@ -3,8 +3,9 @@ import {useEffect,useMemo,useState} from 'react';
 import {initializeApp,getApp,getApps} from 'firebase/app';
 import {getAuth,onAuthStateChanged,User} from 'firebase/auth';
 import {doc,getFirestore,onSnapshot,setDoc} from 'firebase/firestore';
-import {ArrowLeft,BarChart3,CheckCircle2,Cloud,Plus,Trash2,TrendingUp,ShieldCheck} from 'lucide-react';
-import {ResponsiveContainer,CartesianGrid,Tooltip,XAxis,YAxis,LineChart,Line} from 'recharts';
+import {ArrowLeft,ArrowUpRight,BarChart3,CheckCircle2,Cloud,Download,FileUp,Plus,ShieldCheck,Target,Trash2,Activity,ScanLine,Star,ChevronRight} from 'lucide-react';
+import {ResponsiveContainer,CartesianGrid,Tooltip,XAxis,YAxis,ComposedChart,Bar,Line} from 'recharts';
+import './analytics.css';
 
 const config={apiKey:process.env.NEXT_PUBLIC_FIREBASE_API_KEY,authDomain:process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,projectId:process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,appId:process.env.NEXT_PUBLIC_FIREBASE_APP_ID,messagingSenderId:process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,storageBucket:process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET};
 const enabled=Boolean(config.apiKey&&config.appId&&config.projectId);
@@ -12,44 +13,102 @@ const app=enabled?(getApps().length?getApp():initializeApp(config)):null;
 const auth=app?getAuth(app):null;
 const db=app?getFirestore(app):null;
 const BASE='/garden-marketing-control/';
-type Entry={id:string,date:string,scans:number,reviews:number,rating:string,notes:string};
-const empty={date:new Date().toISOString().slice(0,10),scans:'',reviews:'',rating:'',notes:''};
-const css=`
-.analytics-page{min-height:100vh;background:#f7f8f6;color:#223427;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI",Arial,sans-serif}
-.analytics-top{background:rgba(255,255,255,.91);backdrop-filter:blur(22px);border-bottom:1px solid #e5ebe5;position:sticky;top:0;z-index:5}
-.analytics-top-inner{max-width:1180px;margin:auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.analytics-brand{font-size:13px;font-weight:760;letter-spacing:.04em}.analytics-brand span{color:#76907b;font-weight:500}.analytics-back{display:inline-flex;align-items:center;gap:8px;color:#365f42;text-decoration:none;font-size:13px;font-weight:600}
-.analytics-wrap{max-width:1180px;margin:auto;padding:55px 28px 90px}.analytics-eyebrow{font-size:12px;letter-spacing:.14em;font-weight:700;color:#54735a;text-transform:uppercase}
-.analytics-heading{font-size:clamp(36px,5vw,66px);font-weight:750;letter-spacing:-.06em;line-height:1.06;margin:12px 0 16px}.analytics-desc{font-size:17px;color:#758075;line-height:1.6;max-width:690px;margin-bottom:35px}
-.analytics-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin:30px 0}
-.analytics-card{background:white;border:1px solid #e6ebe5;border-radius:23px;padding:26px;box-shadow:0 7px 30px rgba(36,68,40,.025)}
-.analytics-card small{display:block;color:#768278;font-size:12px;font-weight:600}.analytics-card strong{display:block;font-size:clamp(27px,3vw,42px);letter-spacing:-.05em;font-weight:720;color:#294b34;margin:14px 0 9px}.analytics-card p{font-size:12px;color:#89948b;margin:0}
-.analytics-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:17px;margin-top:18px}.analytics-card h2{font-size:20px;letter-spacing:-.035em;margin:0 0 8px}.analytics-muted{font-size:13px;color:#7b897c;line-height:1.55}
-.analytics-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:23px}.analytics-form label{font-size:12px;font-weight:650;display:grid;gap:7px;color:#586c5e}.analytics-form input,.analytics-form textarea{width:100%;border:1px solid #dfe6df;border-radius:12px;padding:13px 14px;background:#fcfdfc;outline:none;color:#223427;font:inherit}.analytics-form textarea{resize:vertical;min-height:75px}.analytics-form input:focus,.analytics-form textarea:focus{border-color:#497453;box-shadow:0 0 0 3px #dcebe0}.analytics-wide{grid-column:1/-1}
-.analytics-button{border:0;background:#315b3f;color:#fff;border-radius:999px;padding:12px 19px;font-weight:650;cursor:pointer;display:inline-flex;gap:8px;align-items:center;justify-content:center}.analytics-button:disabled{opacity:.55;cursor:wait}
-.analytics-log{display:grid;gap:9px;margin-top:22px}.analytics-entry{border:1px solid #e9ede8;padding:13px 15px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px}.analytics-entry b{font-size:13px}.analytics-entry small{display:block;color:#849086;margin-top:5px;font-size:12px}.analytics-entry button{background:#faf3f1;color:#a4564c;border:0;border-radius:11px;padding:9px;cursor:pointer}
-.analytics-state{font-size:12px;color:#50785b;display:flex;gap:7px;align-items:center}.analytics-chart{height:260px;margin-top:22px}
-@media(max-width:880px){.analytics-metrics{grid-template-columns:repeat(2,1fr)}.analytics-grid{grid-template-columns:1fr}}
-@media(max-width:540px){.analytics-wrap{padding:33px 16px 70px}.analytics-top-inner{padding:16px}.analytics-card{padding:20px}.analytics-form{grid-template-columns:1fr}.analytics-metrics{gap:9px}.analytics-card strong{font-size:28px}}
-`;
+type Entry={id:string,date:string,scans:number,reviews?:number,total?:number,rating?:string,notes?:string,recordedAt?:string};
+type FormData={date:string,scans:string,reviews:string,total:string,rating:string,notes:string};
+const emptyForm=():FormData=>({date:new Date().toISOString().slice(0,10),scans:'',reviews:'',total:'',rating:'',notes:''});
+const fmt=(n:number)=>n.toLocaleString('pt-BR');
+const pct=(n:number)=>n.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
+const dateLabel=(date:string)=>new Date(date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+const num=(value:unknown)=>typeof value==='number'&&Number.isFinite(value)?value:undefined;
+function calculated(entries:Entry[]){
+ const ordered=[...entries].sort((a,b)=>a.date.localeCompare(b.date));
+ return ordered.map((e,i)=>{
+   const previous=ordered[i-1];
+   const adjacent=previous&&Math.round((new Date(e.date+'T12:00:00').getTime()-new Date(previous.date+'T12:00:00').getTime())/86400000)===1;
+   const direct=num(e.reviews);
+   const delta=adjacent&&num(e.total)!==undefined&&num(previous?.total)!==undefined?Number(e.total)-Number(previous.total):undefined;
+   return {...e,derivedReviews:direct===undefined?delta:direct};
+ });
+}
+function escapeCSV(value:unknown){const v=String(value??'');return '"'+v.replace(/"/g,'""')+'"';}
+function saveDownload(content:string,name:string,type:string){const url=URL.createObjectURL(new Blob(['\uFEFF'+content],{type}));const link=document.createElement('a');link.href=url;link.download=name;link.click();window.setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function parseCsv(text:string){
+ const rows:string[][]=[];const delimiter=(text.split(/\r?\n/,1)[0]||'').includes(';')?';':',';
+ let row:string[]=[],part='',quoted=false;
+ for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){part+='"';i++;}else quoted=!quoted;}else if(c===delimiter&&!quoted){row.push(part.trim());part='';}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(part.trim());if(row.some(x=>x!==''))rows.push(row);row=[];part='';}else part+=c;}
+ if(part||row.length){row.push(part.trim());rows.push(row);}
+ return rows;
+}
 export default function AnalyticsPage(){
- const [user,setUser]=useState<User|null>(null),[checked,setChecked]=useState(false),[entries,setEntries]=useState<Entry[]>([]),[form,setForm]=useState(empty),[state,setState]=useState('Conectando'),[saving,setSaving]=useState(false);
- useEffect(()=>{if(!auth){setChecked(true);setState('Firebase não configurado');return;}return onAuthStateChanged(auth,u=>{setUser(u);setChecked(true)})},[]);
- useEffect(()=>{if(!user||!db)return;setState('Carregando');const ref=doc(db,'users',user.uid,'data','analytics');return onSnapshot(ref,snap=>{const data=snap.data();setEntries(Array.isArray(data?.entries)?data.entries:[]);setState('Sincronizado')},()=>setState('Falha de conexão — confira o Firestore'))},[user]);
- const totals=useMemo(()=>entries.reduce((acc,e)=>({scans:acc.scans+Number(e.scans||0),reviews:acc.reviews+Number(e.reviews||0)}),{scans:0,reviews:0}),[entries]);
- const rate=totals.scans?((totals.reviews/totals.scans)*100).toFixed(1)+'%':'—';
- const chart=useMemo(()=>[...entries].sort((a,b)=>a.date.localeCompare(b.date)).map(e=>({date:e.date.slice(5).replace('-','/'),scans:e.scans,reviews:e.reviews})),[entries]);
- const latest=useMemo(()=>[...entries].sort((a,b)=>b.date.localeCompare(a.date))[0],[entries]);
- async function save(next:Entry[]){if(!user||!db)return;setSaving(true);setState('Salvando');try{await setDoc(doc(db,'users',user.uid,'data','analytics'),{entries:next,updatedAt:new Date().toISOString()});setState('Sincronizado')}catch{setState('Erro ao salvar — confira as permissões')}finally{setSaving(false)}}
- function add(e:React.FormEvent){e.preventDefault();if(!form.date||Number(form.scans)<0||Number(form.reviews)<0)return;const newEntry:Entry={id:crypto.randomUUID(),date:form.date,scans:Number(form.scans||0),reviews:Number(form.reviews||0),rating:form.rating,notes:form.notes};void save([...entries,newEntry]);setForm(empty)}
- return <div className="analytics-page"><style>{css}</style><header className="analytics-top"><div className="analytics-top-inner"><div className="analytics-brand">GARDEN <span>/ STUDIO</span></div><a href={BASE} className="analytics-back"><ArrowLeft size={17}/> Marketing Control</a></div></header><main className="analytics-wrap">
- <div className="analytics-eyebrow">Garden Studio · módulo de inteligência</div><h1 className="analytics-heading">Garden Analytics.</h1><p className="analytics-desc">Reputação e desempenho em uma visão clara. Registre os números verificados e acompanhe a evolução dos scans de QR Code e avaliações Google.</p>
- {!checked?<p>Verificando autenticação…</p>:!user?<section className="analytics-card"><h2>Acesso privado</h2><p className="analytics-muted">Entre no Garden Marketing Control com sua conta para acessar este módulo.</p><a className="analytics-back" href={BASE}>Ir para o login →</a></section>:<>
- <div className="analytics-state"><Cloud size={15}/>{state}</div>
- <div className="analytics-metrics"><div className="analytics-card"><small>SCANS REGISTRADOS</small><strong>{totals.scans.toLocaleString('pt-BR')}</strong><p>Leituras de QR Code informadas</p></div><div className="analytics-card"><small>AVALIAÇÕES REGISTRADAS</small><strong>{totals.reviews.toLocaleString('pt-BR')}</strong><p>Total informado manualmente</p></div><div className="analytics-card"><small>RELAÇÃO AVALIAÇÕES / SCANS</small><strong>{rate}</strong><p>Indicador comparativo, não conversão atribuída</p></div><div className="analytics-card"><small>NOTA INFORMADA</small><strong>{latest?.rating||'—'}</strong><p>Último registro, não consulta em tempo real</p></div></div>
- <div className="analytics-grid"><section className="analytics-card"><h2>Evolução dos registros</h2><p className="analytics-muted">Histórico dos valores inseridos no painel.</p><div className="analytics-chart">{chart.length?<ResponsiveContainer width="100%" height="100%"><LineChart data={chart}><CartesianGrid stroke="#edf1ea" vertical={false}/><XAxis dataKey="date" fontSize={11}/><YAxis fontSize={11}/><Tooltip/><Line type="monotone" dataKey="scans" name="Scans" stroke="#315b3f" strokeWidth={3} dot={false}/><Line type="monotone" dataKey="reviews" name="Avaliações" stroke="#ba9863" strokeWidth={3}/></LineChart></ResponsiveContainer>:<p className="analytics-muted">Cadastre o primeiro período para visualizar o gráfico.</p>}</div></section>
- <section className="analytics-card"><h2>Novo registro</h2><p className="analytics-muted">Utilize totais do mesmo período e documente a origem.</p><form className="analytics-form" onSubmit={add}><label>Data de referência<input type="date" required value={form.date} onChange={e=>setForm({...form,date:e.target.value})}/></label><label>Nota Google<input placeholder="Ex.: 4,7" value={form.rating} onChange={e=>setForm({...form,rating:e.target.value})}/></label><label>Scans de QR Code<input type="number" min="0" required value={form.scans} onChange={e=>setForm({...form,scans:e.target.value})}/></label><label>Avaliações recebidas<input type="number" min="0" required value={form.reviews} onChange={e=>setForm({...form,reviews:e.target.value})}/></label><label className="analytics-wide">Período, origem e observações<textarea placeholder="Ex.: semana 1, relatório de QR e contagem pública do Google" value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})}/></label><button disabled={saving} className="analytics-button analytics-wide"><Plus size={16}/> {saving?'Salvando…':'Registrar período'}</button></form></section></div>
- <section className="analytics-card" style={{marginTop:18}}><h2>Histórico de registros</h2><p className="analytics-muted">Apenas dados informados por você. Os registros são sincronizados no Firestore e separados do Marketing Control.</p><div className="analytics-log">{[...entries].sort((a,b)=>b.date.localeCompare(a.date)).map(entry=><div className="analytics-entry" key={entry.id}><div><b>{new Date(entry.date+'T12:00:00').toLocaleDateString('pt-BR')} · {entry.scans} scans · {entry.reviews} avaliações</b><small>{entry.notes||'Sem observações'}{entry.rating?' · Nota: '+entry.rating:''}</small></div><button title="Excluir registro" aria-label="Excluir registro" disabled={saving} onClick={()=>{if(window.confirm('Excluir este registro?'))void save(entries.filter(e=>e.id!==entry.id))}}><Trash2 size={17}/></button></div>)}{!entries.length&&<p className="analytics-muted">Nenhum registro cadastrado.</p>}</div></section>
- <p className="analytics-muted" style={{marginTop:20}}>Dados manuais · Sem conexão à API de avaliações Google · A quantidade de scans não comprova que uma avaliação foi publicada.</p>
- </>}</main></div>
+ const [user,setUser]=useState<User|null>(null),[checked,setChecked]=useState(false),[entries,setEntries]=useState<Entry[]>([]);
+ const [form,setForm]=useState<FormData>(emptyForm),[sync,setSync]=useState('Conectando…'),[saving,setSaving]=useState(false);
+ const [days,setDays]=useState(30),[csvResult,setCsvResult]=useState<{scans:number,rows:number}|null>(null),[csvMessage,setCsvMessage]=useState('');
+ useEffect(()=>{if(!auth){setChecked(true);setSync('Firebase não configurado');return;}return onAuthStateChanged(auth,u=>{setUser(u);setChecked(true)})},[]);
+ useEffect(()=>{if(!user||!db)return;setSync('Carregando');return onSnapshot(doc(db,'users',user.uid,'data','analytics'),snapshot=>{const value=snapshot.data();setEntries(Array.isArray(value?.entries)?value.entries:[]);setSync('Sincronizado')},()=>setSync('Falha na sincronização — verifique o acesso'))},[user]);
+ const ordered=useMemo(()=>calculated(entries),[entries]);
+ const selected=useMemo(()=>{if(days===0)return ordered;const now=Date.now(),limit=days*86400000;return ordered.filter(e=>{const diff=now-new Date(e.date+'T12:00:00').getTime();return diff<=limit&&diff>=-86400000;})},[ordered,days]);
+ const sumScans=selected.reduce((v,e)=>v+Number(e.scans||0),0);
+ const comparable=selected.filter(e=>typeof e.derivedReviews==='number'&&e.derivedReviews>=0);
+ const comparableScans=comparable.reduce((v,e)=>v+Number(e.scans||0),0);
+ const reviewCount=comparable.reduce((v,e)=>v+Number(e.derivedReviews||0),0);
+ const ratio=comparableScans>0?comparableScans/reviewCount:null;
+ const conversion=comparableScans>0?pct(reviewCount/comparableScans*100):'—';
+ const latest=[...ordered].reverse().find(e=>num(e.total)!==undefined);
+ const lastRating=[...ordered].reverse().find(e=>e.rating)?.rating||'—';
+ const goals=[1500,2000].map(target=>({target,remaining:latest?Math.max(0,target-Number(latest.total)):null,percentage:latest?Math.min(100,Number(latest.total)/target*100):0}));
+ const chart=selected.map(e=>({name:dateLabel(e.date),scans:e.scans,reviews:typeof e.derivedReviews==='number'&&e.derivedReviews>=0?e.derivedReviews:null}));
+ async function store(next:Entry[]){if(!user||!db)return;setSaving(true);setSync('Salvando…');try{await setDoc(doc(db,'users',user.uid,'data','analytics'),{entries:next,updatedAt:new Date().toISOString()});setSync('Sincronizado')}catch(err){setSync('Erro ao salvar — confira as permissões');alert('Não foi possível salvar. Tente novamente.')}finally{setSaving(false)}}
+ function add(e:React.FormEvent){e.preventDefault();const scans=Number(form.scans),reviews=form.reviews===''?undefined:Number(form.reviews),total=form.total===''?undefined:Number(form.total);if(!form.date||form.scans===''||!Number.isInteger(scans)||scans<0||(reviews!==undefined&&(!Number.isInteger(reviews)||reviews<0))||(total!==undefined&&(!Number.isInteger(total)||total<0))){alert('Confira a data e os números não negativos.');return;}
+ const old=entries.find(x=>x.date===form.date);if(old&&!window.confirm('Já existe registro para essa data. Deseja substituí-lo?'))return;
+ const entry:Entry={id:old?.id||crypto.randomUUID(),date:form.date,scans,reviews,total,rating:form.rating.trim(),notes:form.notes.trim(),recordedAt:new Date().toISOString()};
+ void store([...entries.filter(x=>x.date!==form.date),entry]);setForm(emptyForm);}
+ function exportHistory(){const headers=['data','scans_dia','novas_avaliacoes_informadas','total_avaliacoes_google','nota_google','observacoes'];const rows=[...entries].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>[x.date,x.scans,x.reviews??'',x.total??'',x.rating??'',x.notes??'']);saveDownload([headers,...rows].map(row=>row.map(escapeCSV).join(';')).join('\r\n'),'garden-analytics-historico.csv','text/csv;charset=utf-8');}
+ async function importCsv(file?:File){setCsvResult(null);setCsvMessage('');if(!file)return;try{const rows=parseCsv((await file.text()).replace(/^\uFEFF/,''));const head=(rows[0]||[]).map(x=>x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));const idx=head.findIndex(x=>x.includes('scan'));if(idx<0){setCsvMessage('Nenhuma coluna de scans encontrada no relatório.');return;}let total=0,count=0;for(const row of rows.slice(1)){const raw=(row[idx]||'').replace(/\s/g,'');if(!raw)continue;const n=Number(raw.replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.'));if(Number.isFinite(n)&&n>=0){total+=n;count++;}}setCsvResult({scans:total,rows:count});setCsvMessage('Prévia importada. Confira o período antes de adicionar ao registro.')}catch{setCsvMessage('Não foi possível ler o CSV. Confira o arquivo.');}}
+ const metrics=[
+  {label:'Scans registrados',value:fmt(sumScans),desc:'Leituras informadas no período',Icon:ScanLine},
+  {label:'Avaliações comparáveis',value:comparable.length?fmt(reviewCount):'—',desc:'Contagens verificáveis no período',Icon:Star},
+  {label:'Relação estimada',value:conversion,desc:'Avaliações / scans comparáveis',Icon:Activity},
+  {label:'Scans por avaliação',value:ratio!==null&&Number.isFinite(ratio)&&reviewCount>0?ratio.toLocaleString('pt-BR',{maximumFractionDigits:1}):'—',desc:'Indicador indicativo, sem atribuição',Icon:BarChart3}
+ ];
+ return <div className="analytics-root">
+  <header className="a-top"><div className="a-top-in">
+   <div className="a-mark"><div className="a-mark-symbol">G</div><b>GARDEN <span>/ STUDIO</span></b></div>
+   <nav className="a-top-links"><a href="#indicadores">Indicadores</a><a href="#registros">Registros</a><a href="#metas">Metas</a><a className="a-return" href={BASE}><ArrowLeft size={15}/><span className="a-return-long">Voltar ao </span>Marketing Control</a></nav>
+  </div></header>
+  <section className="a-hero"><div className="a-frame a-hero-in">
+   <div className="a-eyebrow">Inteligência de reputação · Garden Café</div>
+   <h1>Dados que<br/><em>florescem.</em></h1>
+   <p>Uma visão mais clara das avaliações Google e dos scans de QR Code. Acompanhe tendências, estabeleça metas e transforme registros em decisões.</p>
+   <div className="a-hero-footer"><span className="a-chip"><span className="a-chip-dot"/>{checked?(user?'Acesso autenticado':'Aguardando login'):'Verificando acesso'}</span><span className="a-chip"><Cloud size={14}/> {sync}</span><span className="a-hero-note">Registros manuais · API ainda não conectada</span></div>
+  </div></section>
+  <main className="a-main a-frame">
+  {!checked?<section className="a-card" style={{marginTop:-68,position:'relative'}}>Verificando autenticação…</section>:!user?<section className="a-card" style={{marginTop:-68,position:'relative',maxWidth:620}}><h2>Área privada</h2><p className="a-sub" style={{margin:'14px 0 20px'}}>Entre no Garden Studio com seu e-mail e senha para acessar o Analytics.</p><a className="a-btn" href={BASE}>Entrar no Studio <ChevronRight size={17}/></a></section>:<>
+   <section className="a-kpis" aria-label="Resumo dos resultados">{metrics.map(x=><div className="a-kpi" key={x.label}><div className="a-kpi-label"><span>{x.label}</span><span className="a-kpi-icon"><x.Icon size={17}/></span></div><strong>{x.value}</strong><small>{x.desc}</small></div>)}</section>
+   <div className="a-pagehead" id="indicadores"><div><span className="a-eyebrow">Performance em foco</span><h2>Visão dos resultados.</h2><p className="a-sub">Evolução com base nas informações registradas, sem dados fictícios.</p></div><div className="a-ctrls" aria-label="Filtrar período">{[{n:7,label:'7 dias'},{n:30,label:'30 dias'},{n:90,label:'90 dias'},{n:0,label:'Tudo'}].map(d=><button key={d.n} className={days===d.n?'active':''} onClick={()=>setDays(d.n)}>{d.label}</button>)}</div></div>
+   <div className="a-grid">
+    <section className="a-card"><div className="a-card-title"><div><h3>Evolução da reputação</h3><p>Scans de QR Code e novas avaliações informadas</p></div><span className="a-card-label">Por período</span></div><div className="a-chart">{chart.length>=2?<ResponsiveContainer width="100%" height="100%"><ComposedChart data={chart} margin={{top:12,right:5,bottom:0,left:0}}><CartesianGrid stroke="#eaf0e8" vertical={false}/><XAxis dataKey="name" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="scans" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="reviews" orientation="right" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#a58d60'}}/><Tooltip contentStyle={{border:'1px solid #e8eee6',borderRadius:12,fontSize:12}}/><Bar yAxisId="scans" dataKey="scans" name="Scans" fill="#315c42" radius={[5,5,0,0]} maxBarSize={26}/><Line yAxisId="reviews" type="monotone" dataKey="reviews" name="Avaliações" stroke="#ba9863" strokeWidth={3} dot={{r:3}} connectNulls={false}/></ComposedChart></ResponsiveContainer>:<div className="a-chart-empty">Registre pelo menos dois períodos para visualizar a evolução.</div>}</div><div className="a-key"><span><i style={{background:'#315c42'}}/>Scans</span><span><i style={{background:'#ba9863'}}/>Avaliações informadas</span></div></section>
+    <div className="a-sidegrid">
+     <section className="a-card" id="metas"><div className="a-card-title"><div><h3>Metas de reputação</h3><p>Acompanhamento do total acumulado no Google</p></div><Target color="#497757" size={20}/></div><div className="a-goals">{goals.map(g=><div className="a-goal" key={g.target}><div className="a-goal-top"><strong>{fmt(g.target)} avaliações</strong><span>{latest?pct(g.percentage):'Sem base'}</span></div><div className="a-progress"><span style={{width:g.percentage+'%'}}/></div><small>{g.remaining===null?'Informe o total Google para calcular':g.remaining===0?'Meta alcançada':'Faltam '+fmt(g.remaining)+' avaliações'}</small></div>)}</div><p className="a-note">Total Google registrado: {latest?fmt(Number(latest.total)):'não informado'} · Nota: {lastRating}</p></section>
+     <section className="a-card a-source"><span className="a-src-status">Integração automática pendente</span><h3>Google Reviews</h3><p>A aprovação e autorização da API do Perfil da Empresa no Google ainda precisam ser confirmadas. A coleta de scans também depende de uma fonte autorizada.</p><p style={{marginTop:14}}>A rotina de 02h não realiza a coleta nesta versão.</p></section>
+    </div>
+   </div>
+   <div className="a-pagehead" id="registros"><div><span className="a-eyebrow">Controle operacional</span><h2>Registre. Compare. Evolua.</h2><p className="a-sub">Os dados são salvos no Firebase da sua conta, separados do Marketing Control.</p></div></div>
+   <div className="a-second-grid">
+    <section className="a-card"><div className="a-card-title"><div><h3>Adicionar registro</h3><p>Você pode informar avaliações do dia e o total acumulado</p></div><Plus size={20} color="#497757"/></div><form className="a-form" onSubmit={add}>
+     <label>Data<input type="date" required value={form.date} onChange={e=>setForm({...form,date:e.target.value})}/></label>
+     <label>Scans no período<input type="number" min="0" required value={form.scans} onChange={e=>setForm({...form,scans:e.target.value})} placeholder="Ex.: 85"/></label>
+     <label>Novas avaliações (opcional)<input type="number" min="0" value={form.reviews} onChange={e=>setForm({...form,reviews:e.target.value})} placeholder="Ex.: 12"/></label>
+     <label>Total Google acumulado (opcional)<input type="number" min="0" value={form.total} onChange={e=>setForm({...form,total:e.target.value})} placeholder="Ex.: 1062"/></label>
+     <label className="a-wide">Nota exibida (opcional)<input type="text" value={form.rating} onChange={e=>setForm({...form,rating:e.target.value})} placeholder="Ex.: 4,7"/></label>
+     <label className="a-wide">Fonte e observações<textarea value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} placeholder="Período de coleta, origem dos scans e observações importantes"/></label>
+     <button className="a-btn a-wide" disabled={saving} type="submit"><Plus size={16}/>{saving?'Salvando…':'Salvar registro no Firebase'}</button>
+    </form><p className="a-note">A variação entre totais Google só é calculada se houver registros de dias consecutivos. Não confunda variação líquida com o número exato de novas avaliações.</p></section>
+    <section className="a-card"><div className="a-card-title"><div><h3>Importar relatório</h3><p>Leitura de CSV de scans, sem alterar seus registros automaticamente</p></div><FileUp size={20} color="#497757"/></div><div className="a-csv"><FileUp size={28} color="#598469"/><p>Selecione um relatório CSV do sistema de QR Code</p><input type="file" accept=".csv,text/csv" onChange={e=>{void importCsv(e.target.files?.[0]);e.currentTarget.value='';}}/><p>Detectamos a coluna de scans para apresentar uma prévia.</p></div>{csvMessage&&<div className="a-csv-result">{csvMessage}{csvResult&&<><br/><strong>{fmt(csvResult.scans)} scans</strong> em {csvResult.rows} linhas processadas.<div className="a-actions"><button className="a-btn a-btn-outline" type="button" onClick={()=>setForm({...form,scans:String(csvResult.scans)})}>Utilizar no formulário</button></div></>}</div>}
+    <div className="a-actions"><button type="button" className="a-btn a-btn-outline" onClick={exportHistory}><Download size={15}/> Exportar histórico CSV</button></div>
+    <p className="a-note">O relatório é processado apenas no navegador; ele não é enviado automaticamente para o Firebase. Confirme se contém apenas linhas pertinentes ao período escolhido.</p></section>
+   </div>
+   <section className="a-card a-table-card" id="historico"><div className="a-card-title"><div><h3>Histórico de performance</h3><p>Registros manuais sincronizados entre seus computadores</p></div><span className="a-card-label">{entries.length} registros</span></div><div className="a-tablewrap"><table className="a-table"><thead><tr><th>Data</th><th>Scans</th><th>Avaliações informadas</th><th>Total Google</th><th>Nota</th><th>Fonte</th><th></th></tr></thead><tbody>{[...entries].sort((a,b)=>b.date.localeCompare(a.date)).map(e=><tr key={e.id}><td><strong>{new Date(e.date+'T12:00:00').toLocaleDateString('pt-BR')}</strong></td><td>{fmt(Number(e.scans||0))}</td><td>{num(e.reviews)!==undefined?fmt(Number(e.reviews)):'—'}</td><td>{num(e.total)!==undefined?fmt(Number(e.total)):'—'}</td><td>{e.rating||'—'}</td><td>{e.notes||'—'}</td><td><button disabled={saving} title="Excluir registro" aria-label="Excluir registro" className="a-delete" onClick={()=>{if(window.confirm('Excluir este registro do Firebase?'))void store(entries.filter(x=>x.id!==e.id));}}><Trash2 size={16}/></button></td></tr>)}{!entries.length&&<tr><td className="a-empty" colSpan={7}>Nenhum registro ainda. Comece pelo formulário acima.</td></tr>}</tbody></table></div><p className="a-note">Scans não equivalem a avaliações publicadas. A relação mostrada é estimativa por período, não atribuição individual por garçom.</p></section>
+  </>}
+  </main><footer className="a-foot"><div className="a-frame a-foot-inner"><span>GARDEN / STUDIO · Analytics</span><span>Onde os momentos florescem.</span></div></footer>
+ </div>;
 }
