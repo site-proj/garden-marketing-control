@@ -1,0 +1,43 @@
+name: Publish Garden Marketing Control
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build static website
+        run: npm run build
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: "AIzaSyB8UOjab7JoUKUtkm78djtEDfMEa0TtzM8"
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "garden-marketing-control.firebaseapp.com"
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: "garden-marketing-control"
+          NEXT_PUBLIC_FIREBASE_APP_ID: "1:586952652575:web:7341c8bfcc0c7a2a0de22a"
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: "586952652575"
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: "garden-marketing-control.firebasestorage.app"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
