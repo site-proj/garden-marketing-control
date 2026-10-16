@@ -89,6 +89,24 @@ body{background:var(--bg);color:var(--ink)}
 @media(max-width:750px){.sidebar{width:270px}.main{margin:0;width:100%}.topbar{padding:0 18px}.body{padding:28px 18px 36px}.page-top{margin-bottom:24px}.page-top h1{font-size:39px}.page-top p{font-size:12px}.feature-banner{min-height:0;padding:29px 23px;border-radius:19px}.feature-text h2{font-size:32px;margin:18px 0 11px}.feature-cta{margin-top:18px}.kpi-grid{gap:9px}.kpi{min-height:132px;padding:15px;border-radius:15px}.kpi-top{font-size:10px}.kpi strong{font-size:36px}.dashboard-grid{gap:12px}.surface{padding:18px}.chart-wrap{height:225px}.phase-section{margin-top:22px}.phase-cards{grid-template-columns:1fr;gap:9px}.phase-card{padding:17px}.phase-card h4{min-height:auto;margin-top:14px}.phase-card p{min-height:auto}.phase-bottom{margin-top:12px}.account-label{display:none}}
 @media(max-width:390px){.body{padding-left:14px;padding-right:14px}.page-top h1{font-size:35px}.feature-banner{padding:25px 19px}.feature-text h2{font-size:29px}.kpi{padding:12px}.kpi-top{align-items:flex-start}.kpi-icon{width:27px;height:27px}.kpi strong{font-size:32px}.cloud-login-card{padding:34px 23px}}
 
+/* Navegação recolhível do plano de Instagram */
+.main-nav{min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#dce6dc transparent}
+.main-nav .nav-group-toggle{height:auto;min-height:44px;justify-content:space-between;gap:8px;margin:0 0 7px;padding:9px 13px;border:1px solid #e0e8de;background:#f7f9f6;color:#36543d;font-size:11px;font-weight:720;line-height:1.4;text-align:left;white-space:normal}
+.main-nav .nav-group-toggle:hover,.main-nav .nav-group-toggle.has-active{background:#edf4eb;color:#285838}
+.nav-group-toggle>span:first-child{min-width:0;flex:1}
+.nav-group-toggle .nav-chevron{flex:none;color:#7f9581;transform:rotate(-90deg);transition:transform .22s ease}
+.nav-group-toggle .nav-chevron.expanded{transform:rotate(0deg)}
+.nav-submenu{display:grid;grid-template-rows:0fr;max-height:0;opacity:0;visibility:hidden;overflow:hidden;transition:grid-template-rows .24s ease,max-height .24s ease,opacity .18s ease,visibility .18s ease}
+.nav-submenu.expanded{grid-template-rows:1fr;max-height:650px;opacity:1;visibility:visible}
+.nav-submenu-inner{min-height:0;overflow:hidden;margin:0 0 5px 19px;padding:0 0 5px 8px;border-left:1px solid #e4ebe2}
+.nav-submenu-inner .nav-caption{margin-left:-8px;margin-bottom:7px;padding-left:16px}
+.nav-submenu-inner .nav-caption-gap{margin-top:18px}
+.nav-submenu-inner button{height:41px;font-size:11px;padding-left:12px}
+.nav-submenu-inner button.selected{background:#eaf1e8}
+.main-nav .studio-analytics-link{margin-top:8px}
+@media(max-width:750px){.main-nav .nav-group-toggle{min-height:46px}.nav-submenu-inner button{height:43px}}
+@media(prefers-reduced-motion:reduce){.nav-submenu,.nav-group-toggle .nav-chevron{transition:none!important}}
+
 /* Garden Studio module navigation */
 .main-nav .studio-analytics-link{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;color:#315b3f;background:#edf4eb;text-decoration:none;font-weight:700;font-size:13px;margin:8px 0;transition:background .2s ease}
 .main-nav .studio-analytics-link:hover{background:#e0eddf}
