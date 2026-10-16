@@ -11,6 +11,84 @@
 .cloud-login-card h1{font-size:clamp(30px,4vw,43px);line-height:1.12;letter-spacing:-.055em;margin:15px 0;font-weight:700;color:#1d1d1f}.cloud-login-card p{color:#676e68;line-height:1.65}.cloud-login-card form{display:grid;gap:15px;margin-top:28px}.cloud-login-card label{display:grid;gap:8px;font-weight:600;font-size:13px}.cloud-login-card input{width:100%;padding:14px 17px;border-radius:12px;border:1px solid #d7ddd7;font:inherit}.cloud-login-card button{justify-content:center;padding:14px}.cloud-login-message{font-size:13px;color:#365a40}
 @media(max-width:600px){.cloud-login-card{padding:36px 24px}}
 
+/* Garden Studio dashboard refinement */
+:root{--ink:#1d2c22;--green:#254d34;--green2:#63836a;--bg:#f5f7f3;--line:#e6ebe4}
+body{background:var(--bg);color:var(--ink)}
+.sidebar{width:264px;padding:29px 17px 20px;background:#fbfcfa;border-right-color:#e7ebe5}
+.identity{display:block;padding:3px 13px;margin-bottom:42px}
+.identity-wordmark{display:flex;align-items:baseline;gap:6px;white-space:nowrap}
+.identity-wordmark strong{font-size:14px;letter-spacing:.12em;font-weight:800;color:#213c2c}
+.identity-wordmark span{font-size:13px;letter-spacing:.09em;font-weight:520;color:#718575}
+.identity small{margin-top:8px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#98a497}
+.main-nav button,.main-nav .studio-analytics-link{height:44px;border-radius:11px;font-size:12px}
+.main-nav button.selected{background:#eaf1e8;color:#244b32;box-shadow:inset 2px 0 #65866a}
+.main-nav .studio-analytics-link{border:1px solid #dfe9dd;background:#f5f8f3;color:#315b3f}
+.nav-caption{font-size:9px;letter-spacing:.16em;color:#99a398}
+.nav-caption-gap{margin-top:29px}
+.side-progress{background:#f1f5ef;border:1px solid #e7eee5;padding:17px;border-radius:14px}
+.side-progress-top strong{font-size:20px}
+.main{margin-left:264px;width:calc(100% - 264px)}
+.topbar{height:70px;padding:0 clamp(22px,3vw,48px);background:rgba(251,252,250,.88);border-bottom-color:#e7ebe5}
+.topbar-left{font-size:11px;gap:10px}.topbar-left b{color:#314737}
+.topbar-actions{gap:13px}.account-label{font-size:11px;font-weight:650;color:#6f7f71;padding-left:2px}
+.body{padding:43px clamp(22px,3.1vw,48px) 48px}
+.page-top{margin-bottom:30px;align-items:center}
+.overline{font-size:9px;letter-spacing:.18em;margin-bottom:12px;color:#788f79}
+.page-top h1{font-size:clamp(38px,3.6vw,54px);font-weight:680;letter-spacing:-.07em;color:#1e3024}
+.page-top p{font-size:14px;color:#7f8b80;margin-top:10px}
+.btn{border-radius:11px}.btn.primary{background:#294f36;border-color:#294f36;box-shadow:0 7px 18px #294f361f}
+.feature-banner{min-height:286px;margin-bottom:17px;border-radius:23px;padding:38px clamp(28px,4vw,53px);background:radial-gradient(ellipse at 82% 25%,#416b4b 0%,#2b5338 36%,#193c29 100%);box-shadow:0 16px 40px #193c2918}
+.feature-banner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 42%,#ffffff08 72%,transparent 100%)}
+.feature-label{font-size:9px;letter-spacing:.18em;color:#c6d6c2}
+.feature-text h2{font-size:clamp(32px,3.2vw,45px);font-weight:630;line-height:1.08;letter-spacing:-.065em;margin:20px 0 13px}
+.feature-text h2 em{color:#c7d4b6}
+.feature-text p{max-width:470px;font-size:12px;color:#cbd7cc;line-height:1.7}
+.feature-cta{margin-top:22px;padding:11px 14px;border-radius:10px;border-color:#ffffff35;background:#ffffff18;font-size:11px}
+.orbital{width:220px;height:220px;margin-right:24px}
+.orbital-ring.r2{inset:20px}.orbital-ring.r3{inset:42px}
+.orbital-core strong{font-size:53px;font-weight:620}
+.orbital-core span{font-size:8px;letter-spacing:.19em}
+.kpi-grid{gap:12px;margin-bottom:16px}
+.kpi{min-height:148px;padding:19px 20px;border-radius:17px;border-color:#e7ece5;box-shadow:0 8px 26px #19352108}
+.kpi-top{font-size:11px;color:#77847a}.kpi-icon{width:31px;height:31px;border-radius:10px;background:#eef3ec;color:#527459}
+.kpi strong{font-size:43px;font-weight:650;letter-spacing:-.075em;margin:7px 0 2px;color:#2c5037}
+.kpi-red strong{color:#a65c51}.kpi p{font-size:10px;color:#929d92}
+.dashboard-grid{grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);gap:15px}
+.surface{border:1px solid #e7ece6;border-radius:18px;padding:23px;box-shadow:0 8px 26px #19352106}
+.section-heading h3,.section-heading-out h3,.list-top h3{font-size:19px;letter-spacing:-.045em;color:#263a2c}
+.section-heading p{font-size:11px;color:#89958a}
+.chart-legend{font-size:10px;margin-top:18px}
+.chart-wrap{height:196px}
+.task-row{gap:11px;padding:12px 0;border-color:#edf0ec}
+.task-title{font-size:11px}.task-meta{font-size:9px;margin-top:5px}
+.task-check{width:20px;height:20px;flex-basis:20px;border-radius:6px}
+.pill{font-size:9px;padding:5px 8px}
+.phase-section{margin-top:26px}
+.section-heading-out{margin-bottom:15px}
+.section-heading-out h3{margin-top:7px}
+.phase-cards{gap:12px}
+.phase-card{border:1px solid #e7ece6;padding:20px;border-radius:16px;background:linear-gradient(150deg,#fff,#fbfcfa)}
+.phase-top{font-size:9px;letter-spacing:.13em}
+.phase-card h4{font-size:17px;line-height:1.25;min-height:42px;margin-top:23px;color:#2c4131}
+.phase-card p{font-size:11px;min-height:52px;margin-top:8px}
+.phase-bottom{margin-top:15px;gap:10px}
+.meter{height:6px;background:#e4ebe2}.meter>span{background:linear-gradient(90deg,#3c6948,#91ad88)}
+.cloud-login{background:radial-gradient(ellipse at 76% 12%,#e3ecdf 0%,transparent 39%),linear-gradient(145deg,#f5f7f3,#eff3ed)}
+.cloud-login-card{max-width:480px;padding:48px 46px;border-radius:25px;border-color:#e3e9e1;box-shadow:0 26px 70px #203c2810}
+.cloud-login-brand{display:flex;align-items:baseline;gap:7px;margin-bottom:33px;color:#213c2c}
+.cloud-login-brand strong{font-size:14px;letter-spacing:.13em;font-weight:800}
+.cloud-login-brand span{font-size:13px;letter-spacing:.09em;color:#718575}
+.cloud-login-card .eyebrow{font-size:9px;letter-spacing:.17em}
+.cloud-login-card h1{font-size:clamp(30px,4vw,40px);letter-spacing:-.06em}
+.cloud-login-card p{font-size:13px;color:#758076}
+.cloud-login-card form{gap:13px;margin-top:24px}
+.cloud-login-card label{font-size:12px;color:#415344}
+.cloud-login-card input{border-color:#e0e7de;background:#fcfdfb;border-radius:11px}
+.cloud-login-card button{min-height:45px}
+@media(max-width:1050px){.sidebar{width:224px}.main{margin-left:224px;width:calc(100% - 224px)}.dashboard-grid{grid-template-columns:1fr}.kpi{min-height:140px}.body{padding-left:27px;padding-right:27px}}
+@media(max-width:750px){.sidebar{width:270px}.main{margin:0;width:100%}.topbar{padding:0 18px}.body{padding:28px 18px 36px}.page-top{margin-bottom:24px}.page-top h1{font-size:39px}.page-top p{font-size:12px}.feature-banner{min-height:0;padding:29px 23px;border-radius:19px}.feature-text h2{font-size:32px;margin:18px 0 11px}.feature-cta{margin-top:18px}.kpi-grid{gap:9px}.kpi{min-height:132px;padding:15px;border-radius:15px}.kpi-top{font-size:10px}.kpi strong{font-size:36px}.dashboard-grid{gap:12px}.surface{padding:18px}.chart-wrap{height:225px}.phase-section{margin-top:22px}.phase-cards{grid-template-columns:1fr;gap:9px}.phase-card{padding:17px}.phase-card h4{min-height:auto;margin-top:14px}.phase-card p{min-height:auto}.phase-bottom{margin-top:12px}.account-label{display:none}}
+@media(max-width:390px){.body{padding-left:14px;padding-right:14px}.page-top h1{font-size:35px}.feature-banner{padding:25px 19px}.feature-text h2{font-size:29px}.kpi{padding:12px}.kpi-top{align-items:flex-start}.kpi-icon{width:27px;height:27px}.kpi strong{font-size:32px}.cloud-login-card{padding:34px 23px}}
+
 /* Garden Studio module navigation */
 .main-nav .studio-analytics-link{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;color:#315b3f;background:#edf4eb;text-decoration:none;font-weight:700;font-size:13px;margin:8px 0;transition:background .2s ease}
 .main-nav .studio-analytics-link:hover{background:#e0eddf}
