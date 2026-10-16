@@ -109,6 +109,78 @@ body{background:var(--bg);color:var(--ink)}
 .garden-board-wrap{min-width:0}.garden-board-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;padding:18px 21px;background:#fff;border:1px solid #e9eee8;border-radius:17px}.garden-board-toolbar p{font-size:11px;color:#91a092;margin-top:6px}.garden-board-toolbar>div:last-child{display:flex;gap:9px;flex-wrap:wrap}.garden-board-columns{display:flex;align-items:flex-start;gap:14px;overflow-x:auto;padding:2px 2px 16px;scroll-snap-type:x proximity}.garden-board-column{flex:0 0 292px;max-height:calc(100vh - 260px);min-height:270px;display:flex;flex-direction:column;background:#edf1ec;border:1px solid #e4eae2;border-radius:17px;padding:12px;scroll-snap-align:start}.garden-board-column>header{display:flex;align-items:center;gap:8px;padding:3px 2px 12px}.garden-board-column>header h3{font-size:12px;line-height:1.45;font-weight:720;color:#3e5542;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;flex:1}.garden-board-column>header>span{font-size:10px;color:#829284;background:#e2e9e0;padding:4px 7px;border-radius:7px}.garden-board-column>header button,.garden-add-column{display:grid;place-items:center;width:29px;height:29px;border-radius:8px;color:#67806b;background:#e3eae1}.garden-board-cards{overflow-y:auto;display:grid;gap:9px;align-content:start;padding:1px 1px 8px;min-height:34px}.garden-board-card{background:white;border:1px solid #e7ebe6;border-radius:12px;box-shadow:0 3px 9px #203c2808;cursor:grab}.garden-board-card:active{cursor:grabbing}.garden-board-card details{padding:12px}.garden-board-card summary{font-size:11px;color:#46594a;font-weight:650;line-height:1.5;cursor:pointer;overflow-wrap:anywhere}.garden-card-description{white-space:pre-wrap;overflow-wrap:anywhere;color:#738176;font-size:10px;line-height:1.7;border-top:1px solid #edf0ed;margin-top:10px;padding-top:10px;max-height:330px;overflow:auto}.garden-card-source{display:inline-flex;align-items:center;gap:5px;margin-top:10px;color:#53765a;font-size:10px;font-weight:680}.garden-card-actions{display:flex;align-items:center;gap:8px;margin-top:11px;padding-top:9px;border-top:1px solid #f0f2ef}.garden-card-actions button{color:#58755e;font-size:10px;font-weight:700}.garden-card-actions select{min-width:0;flex:1;border:1px solid #e9eee8;border-radius:7px;background:#fbfcfb;color:#758176;padding:6px;font-size:9px}.garden-board-empty{font-size:10px;color:#a0aaa1;padding:8px 3px}.garden-add-card{display:flex;align-items:center;gap:7px;color:#849285;font-size:10px;padding:10px 3px 2px;text-align:left}.garden-add-column{flex:0 0 48px;height:48px;background:#e9eee8}.garden-board-card[draggable=true]{touch-action:pan-y}
 @media(max-width:750px){.garden-board-toolbar{align-items:flex-start;flex-direction:column;padding:15px}.garden-board-columns{margin-right:-18px;padding-right:18px}.garden-board-column{flex-basis:min(82vw,310px);max-height:calc(100vh - 255px)}.garden-board-column>header h3{-webkit-line-clamp:2}.garden-card-description{max-height:280px}}
 
+/* Biblioteca TRELLO, separada da operação diária */
+.main-nav .trello-nav-link{display:flex;align-items:center;gap:12px;width:100%;height:46px;padding:0 13px;margin:12px 0 8px;border:1px solid #ffffff18;border-radius:12px;background:#ffffff08;color:#d8dbc9;font-size:11px;font-weight:720;letter-spacing:.11em;text-align:left}
+.main-nav .trello-nav-link:hover,.main-nav .trello-nav-link.selected{background:#c5ad7c18;border-color:#c5ad7c44;color:#f0d8a2}
+.main-nav .trello-nav-link .nav-active-dot{margin-left:auto}
+.trello-library{max-width:1400px;margin:0 auto}
+.trello-intro{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:27px 31px;margin-bottom:16px;border:1px solid #e8e6dc;border-radius:20px;background:linear-gradient(115deg,#fffefa,#f4f3eb);box-shadow:0 8px 24px #24332607}
+.trello-intro .eyebrow{color:#a1895c}
+.trello-intro h2{margin-top:9px;color:#29382d;font:500 clamp(25px,3vw,35px)/1.15 Georgia,'Times New Roman',serif;letter-spacing:-.035em}
+.trello-intro p{max-width:650px;margin-top:9px;color:#7e877c;font-size:12px;line-height:1.7}
+.trello-intro-mark{display:grid;justify-items:center;gap:8px;min-width:116px;color:#61785e}
+.trello-intro-mark span,.trello-principle>span{font-size:8px;font-weight:760;letter-spacing:.15em}
+.trello-principle{display:flex;align-items:center;gap:19px;padding:17px 23px;margin-bottom:30px;border:1px solid #425942;border-radius:15px;background:linear-gradient(110deg,#263f2e,#314b36);color:#f8f4e9}
+.trello-principle>span{flex:none;color:#c5ad7c}
+.trello-principle strong{font:500 16px/1.35 Georgia,'Times New Roman',serif}
+.trello-principle em{color:#d2c19a;font-style:normal}
+.trello-principle p{margin-left:auto;color:#d1d8cb;font-size:10px}
+.trello-section{margin:0 0 32px}
+.trello-section-head{display:flex;align-items:flex-start;gap:12px;margin:0 0 14px}
+.trello-section-icon{display:grid;place-items:center;width:34px;height:34px;flex:none;border:1px solid #e4e8de;border-radius:11px;background:#f5f6f0;color:#70846a}
+.trello-section-head .eyebrow{font-size:8px;letter-spacing:.15em;color:#9b8c6b}
+.trello-section-head h3{margin-top:3px;color:#26352a;font-size:18px;font-weight:660;letter-spacing:-.04em}
+.trello-section-head p{margin-top:4px;color:#889087;font-size:10px;line-height:1.55}
+.trello-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.trello-content-card{min-width:0;padding:18px 19px;border:1px solid #e8e8df;border-radius:16px;background:#fffefa;box-shadow:0 6px 18px #263a2c06}
+.trello-card-top{display:flex;align-items:center;justify-content:space-between;gap:9px;color:#9a8a65;font-size:8px;font-weight:750;letter-spacing:.11em}
+.trello-card-count{padding:4px 7px;border-radius:20px;background:#eef1e9;color:#74806e;font-size:8px;letter-spacing:0}
+.trello-content-card h4{margin:12px 0 8px;color:#334434;font-size:14px;font-weight:680;line-height:1.5;letter-spacing:-.02em;overflow-wrap:anywhere}
+.trello-card-preview{color:#7c857c;font-size:10px;line-height:1.7}
+.trello-card-details{margin-top:12px;border-top:1px solid #eeeee7}
+.trello-card-details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0 2px;color:#657961;font-size:10px;font-weight:680;line-height:1.5;cursor:pointer;list-style:none}
+.trello-card-details>summary::-webkit-details-marker{display:none}
+.trello-card-details>summary svg{flex:none;transition:transform .2s}
+.trello-card-details[open]>summary svg{transform:rotate(180deg)}
+.trello-copy{max-height:560px;overflow:auto;padding:10px 11px;border-radius:10px;background:#f8f8f3;color:#6d776c;font-size:10px;line-height:1.75}
+.trello-copy p{margin:0 0 6px}
+.trello-copy p:last-child{margin-bottom:0}
+.trello-copy strong{color:#465c47}
+.trello-copy .trello-copy-item{position:relative;padding-left:14px}
+.trello-copy .trello-copy-item:before{content:'•';position:absolute;left:1px;color:#a28d5d}
+.trello-copy-space{display:block;height:5px}
+.recording-card{grid-column:1/-1}
+.recording-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:8px}
+.recording-group{min-width:0;border:1px solid #e8ebe3;border-radius:9px;background:#fff}
+.recording-group>summary{display:flex;justify-content:space-between;gap:8px;padding:9px 10px;color:#536951;font-size:9px;font-weight:680;line-height:1.4;cursor:pointer;list-style:none}
+.recording-group>summary::-webkit-details-marker{display:none}
+.recording-group>summary span{flex:none;color:#a18d61}
+.recording-group ul{display:grid;gap:5px;margin:0;padding:0 12px 11px 23px;color:#798277;font-size:9px;line-height:1.5}
+.trello-library-foot{padding:14px 0 5px;border-top:1px solid #e6e7df;color:#969d93;font-size:9px;letter-spacing:.04em}
+.trello-open-card{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:10px;padding:11px 12px;border:1px solid #e9ebe3;border-radius:10px;background:#fbfbf7;color:#536951;text-align:left;font-size:10px;font-weight:670;line-height:1.5;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.trello-open-card:hover{transform:translateY(-1px);border-color:#d9dfd2;background:#f4f6ef}
+.trello-open-card>span{min-width:0}
+.trello-open-card svg{flex:none;color:#9c895c}
+.recording-open{margin-top:14px}
+.reference-overlay{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:clamp(14px,3vw,36px);background:#101b14a8;backdrop-filter:blur(8px)}
+.reference-modal{display:flex;flex-direction:column;width:min(1000px,100%);max-height:min(900px,calc(100vh - 52px));overflow:hidden;border:1px solid #e7e6dc;border-radius:22px;background:#fbfaf6;box-shadow:0 32px 100px #101b1450}
+.reference-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:25px 30px 20px;border-bottom:1px solid #e8e7df;background:#fffefa}
+.reference-modal-head .eyebrow{color:#a18c60}
+.reference-modal-head h2{max-width:800px;margin-top:7px;color:#293a2d;font:500 clamp(22px,3vw,32px)/1.2 Georgia,'Times New Roman',serif;letter-spacing:-.03em}
+.reference-modal-content{overflow:auto;padding:24px 30px 32px}
+.reference-rich-copy{max-height:none;padding:22px 25px;border:1px solid #ebeae1;background:#fff; color:#535f53;font-size:13px;line-height:1.9}
+.reference-rich-copy p{margin:0 0 11px}
+.reference-rich-copy p:last-child{margin-bottom:0}
+.reference-review-note{display:grid;gap:5px;margin:18px 30px 0;padding:12px 14px;border:1px solid #eadfbd;border-radius:11px;background:#f7f1df;color:#776743;font-size:10px;line-height:1.55}
+.reference-review-note strong{font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.reference-modal-content>.recording-group{margin-bottom:9px;border:1px solid #e5e8df;border-radius:12px;background:#fff}
+.reference-modal-content>.recording-group>summary{padding:14px 16px;font-size:11px}
+.reference-modal-content>.recording-group ul{padding:0 20px 16px 34px;font-size:11px;line-height:1.7}
+.reference-modal .icon-button{flex:none}
+@media(max-width:900px){.trello-principle{align-items:flex-start;flex-direction:column;gap:8px}.trello-principle p{margin-left:0}.trello-intro-mark{min-width:95px}}
+@media(max-width:750px){.main-nav .trello-nav-link{height:45px;margin:8px 0}.trello-intro{align-items:flex-start;padding:22px 20px}.trello-intro-mark{display:none}.trello-card-grid{grid-template-columns:1fr;gap:9px}.recording-card{grid-column:auto}.recording-groups{grid-template-columns:1fr}.trello-content-card{padding:16px}.trello-principle{padding:15px 17px}.trello-principle strong{font-size:15px}.trello-section{margin-bottom:27px}}
+@media(max-width:750px){.reference-overlay{padding:8px}.reference-modal{width:100%;max-height:calc(100dvh - 16px);border-radius:16px}.reference-modal-head{padding:19px 17px 15px}.reference-modal-head h2{font-size:23px}.reference-modal-content{padding:15px 14px 22px}.reference-rich-copy{padding:16px 15px;font-size:12px;line-height:1.8}.reference-review-note{margin:12px 15px 0}.reference-modal-content>.recording-group>summary{padding:12px}.reference-modal-content>.recording-group ul{font-size:10px}}
+
 /* Garden Studio module navigation */
 .main-nav .studio-analytics-link{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;color:#315b3f;background:#edf4eb;text-decoration:none;font-weight:700;font-size:13px;margin:8px 0;transition:background .2s ease}
 .main-nav .studio-analytics-link:hover{background:#e0eddf}
