@@ -72,14 +72,14 @@ export default function AnalyticsPage(){
  ];
  return <div className="analytics-root">
   <header className="a-top"><div className="a-top-in">
-   <div className="a-mark"><div className="a-mark-symbol">G</div><b>GARDEN <span>/ STUDIO</span></b></div>
-   <nav className="a-top-links"><a href="#indicadores">Indicadores</a><a href="#registros">Registros</a><a href="#metas">Metas</a><a className="a-return" href={BASE}><ArrowLeft size={15}/><span className="a-return-long">Voltar ao </span>Marketing Control</a></nav>
+   <div className="a-mark"><div className="a-mark-symbol"><img src="https://gardenjundiai.com.br/wp-content/uploads/2025/07/garden-logo-branco-scaled.png" alt="" onLoad={e=>{const fallback=e.currentTarget.nextElementSibling;if(fallback instanceof HTMLElement)fallback.style.display="none"}} onError={e=>{e.currentTarget.style.display="none"}}/><span className="a-mark-fallback">G</span></div><b>GARDEN <span>/ STUDIO</span></b></div>
+   <nav className="a-top-links"><a href="#indicadores">Indicadores</a><a href="#registros">Registros</a><a href="#metas">Metas</a><a className="a-top-new" href="#registros" aria-label="Adicionar novo registro"><Plus size={16}/><span>Novo registro</span></a><a className="a-return" href={BASE}><ArrowLeft size={15}/><span className="a-return-long">Marketing Control</span><span className="a-return-short">Voltar</span></a></nav>
   </div></header>
   <section className="a-hero"><div className="a-frame a-hero-in">
-   <div className="a-eyebrow">Inteligência de reputação · Garden Café</div>
-   <h1>Dados que<br/><em>florescem.</em></h1>
-   <p>Uma visão mais clara das avaliações Google e dos scans de QR Code. Acompanhe tendências, estabeleça metas e transforme registros em decisões.</p>
-   <div className="a-hero-footer"><span className="a-chip"><span className="a-chip-dot"/>{checked?(user?'Acesso autenticado':'Aguardando login'):'Verificando acesso'}</span><span className="a-chip"><Cloud size={14}/> {sync}</span><span className="a-hero-note">Registros manuais · API ainda não conectada</span></div>
+   <div className="a-eyebrow">Reputação &amp; desempenho · Garden Café</div>
+   <h1>Garden <em>Analytics.</em></h1>
+   <p>Avaliações Google, scans de QR Code e metas em uma visão clara para orientar suas decisões.</p>
+   <div className="a-hero-footer"><span className="a-chip"><span className="a-chip-dot"/>{checked?(user?'Acesso autenticado':'Aguardando login'):'Verificando acesso'}</span><span className="a-chip"><Cloud size={14}/> {sync}</span><span className="a-hero-note">Dados manuais · API Google pendente</span></div>
   </div></section>
   <main className="a-main a-frame">
   {!checked?<section className="a-card" style={{marginTop:-68,position:'relative'}}>Verificando autenticação…</section>:!user?<section className="a-card" style={{marginTop:-68,position:'relative',maxWidth:620}}><h2>Área privada</h2><p className="a-sub" style={{margin:'14px 0 20px'}}>Entre no Garden Studio com seu e-mail e senha para acessar o Analytics.</p><a className="a-btn" href={BASE}>Entrar no Studio <ChevronRight size={17}/></a></section>:<>
