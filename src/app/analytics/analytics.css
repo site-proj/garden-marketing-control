@@ -19,3 +19,68 @@
 @media(max-width:850px){.a-top-links a:not(.a-return){display:none}.a-grid,.a-second-grid{grid-template-columns:1fr}.a-sidegrid{grid-template-columns:1fr 1fr}.a-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.a-hero-in{padding-bottom:125px!important}.a-pagehead{align-items:start;flex-direction:column}.a-card{padding:22px}}
 @media(max-width:570px){.analytics-root .a-frame{padding-left:17px;padding-right:17px}.a-top-in{padding:12px 17px}.a-mark b{font-size:11px}.a-top-links{gap:8px}.a-return{font-size:11px!important;padding:9px 10px}.a-return .a-return-long{display:none}.a-hero-in{padding-top:66px!important;padding-bottom:110px!important}.a-hero h1{font-size:52px}.a-hero p{font-size:14px}.a-kpis{gap:9px;margin-top:-55px}.a-kpi{min-height:144px;border-radius:17px;padding:16px}.a-kpi strong{font-size:28px}.a-kpi-label{font-size:9px}.a-kpi small{font-size:11px}.a-pagehead{margin-top:55px}.a-sidegrid{grid-template-columns:1fr}.a-form{gap:11px}.a-ctrls button{padding:8px 10px}}
 @media(prefers-reduced-motion:reduce){.analytics-root *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+
+/* Garden Studio / Analytics — app-first visual refinement */
+.a-mark-symbol{position:relative;overflow:hidden;flex:none}
+.a-mark-symbol img{position:absolute;z-index:2;width:34px;height:34px;object-fit:contain;inset:50% auto auto 50%;transform:translate(-50%,-50%)}
+.a-mark-fallback{position:relative;z-index:1}
+.a-top-new{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#e8f0e8;border:1px solid #dde8dc;color:#2a5639!important;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:700;white-space:nowrap;transition:background .18s}
+.a-top-new:hover{background:#d9e7d8}
+.a-return-short{display:none}
+.a-hero h1{font-size:clamp(47px,5.6vw,80px);letter-spacing:-.065em;margin:19px 0 15px}
+.a-hero-in{padding-top:70px!important;padding-bottom:122px!important}
+.a-hero p{max-width:660px}
+.a-hero-footer{margin-top:28px}
+.a-pagehead[id],.a-card[id]{scroll-margin-top:85px}
+@media(max-width:850px){
+  .a-top-new{padding:9px}
+  .a-top-new span{display:none}
+  .a-top-links{gap:10px}
+}
+@media(max-width:570px){
+  .a-top-in{padding:11px 16px;gap:8px}
+  .a-mark{gap:9px}
+  .a-mark-symbol{height:37px;width:37px;border-radius:12px}
+  .a-mark-symbol img{width:32px;height:32px}
+  .a-mark b{font-size:11px;letter-spacing:.05em}
+  .a-top-links{gap:5px}
+  .a-top-new{width:36px;height:36px;padding:0;border-radius:11px}
+  .a-return{gap:5px;padding:8px 9px;border-color:#e4eae2!important;font-size:11px!important}
+  .a-return-long{display:none}
+  .a-return-short{display:inline}
+  .a-hero-in{padding-top:35px!important;padding-bottom:80px!important}
+  .a-hero:after{opacity:.45}
+  .a-hero .a-eyebrow{font-size:9px;letter-spacing:.1em;line-height:1.4}
+  .a-hero .a-eyebrow:before{width:14px}
+  .a-hero h1{font-size:clamp(34px,9.1vw,43px);max-width:100%;line-height:1.07;letter-spacing:-.065em;margin:15px 0 10px}
+  .a-hero p{font-size:12.5px;max-width:350px;line-height:1.55}
+  .a-hero-footer{margin-top:18px;gap:7px}
+  .a-chip{padding:7px 9px;font-size:10px;gap:6px;white-space:nowrap}
+  .a-chip svg{width:13px;height:13px}
+  .a-hero-note{width:100%;font-size:10.5px;margin-top:3px}
+  .a-kpis{margin-top:-44px;gap:9px}
+  .a-kpi{min-height:130px;border-radius:17px;padding:15px;box-shadow:0 10px 28px rgba(28,66,35,.045)}
+  .a-kpi-label{font-size:9.5px;line-height:1.32;letter-spacing:.035em;gap:4px}
+  .a-kpi-icon{width:28px;height:28px;border-radius:9px;flex:none}
+  .a-kpi-icon svg{width:15px;height:15px}
+  .a-kpi strong{font-size:31px}
+  .a-kpi small{font-size:10.5px;line-height:1.45}
+  .a-pagehead{margin-top:44px;margin-bottom:17px}
+  .a-pagehead h2{font-size:29px;margin:9px 0 5px}
+  .a-sub{font-size:12px}
+  .a-card{padding:19px;border-radius:19px}
+  .a-card-title h3{font-size:18px}
+  .a-chart{height:244px}
+  .a-ctrls{width:100%;justify-content:space-between}
+  .a-ctrls button{flex:1;padding:8px 7px}
+  .a-form{grid-template-columns:1fr}
+  .a-foot-inner{flex-direction:column;text-align:center;gap:5px}
+}
+@media(max-width:360px){
+  .a-mark b{font-size:10px}
+  .a-mark{gap:6px}
+  .a-return{padding:7px!important}
+  .a-kpi{padding:12px}
+  .a-kpi strong{font-size:28px}
+}
