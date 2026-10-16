@@ -72,8 +72,17 @@ export default function AnalyticsPage(){
  ];
  return <div className="analytics-root">
   <header className="a-top"><div className="a-top-in">
-   <div className="a-mark"><div className="a-mark-symbol"><img src="https://gardenjundiai.com.br/wp-content/uploads/2025/07/garden-logo-branco-scaled.png" alt="" onLoad={e=>{const fallback=e.currentTarget.nextElementSibling;if(fallback instanceof HTMLElement)fallback.style.display="none"}} onError={e=>{e.currentTarget.style.display="none"}}/><span className="a-mark-fallback">G</span></div><b>GARDEN <span>/ STUDIO</span></b></div>
-   <nav className="a-top-links"><a href="#indicadores">Indicadores</a><a href="#registros">Registros</a><a href="#metas">Metas</a><a className="a-top-new" href="#registros" aria-label="Adicionar novo registro"><Plus size={16}/><span>Novo registro</span></a><a className="a-return" href={BASE}><ArrowLeft size={15}/><span className="a-return-long">Marketing Control</span><span className="a-return-short">Voltar</span></a></nav>
+   <a className="a-brand" href={BASE} aria-label="Garden Studio — página inicial">
+    <span className="a-brand-word">GARDEN <span className="a-brand-slash">/</span> <span className="a-brand-studio">STUDIO</span></span>
+    <span className="a-brand-caption">CENTRAL DE INTELIGÊNCIA</span>
+   </a>
+   <nav className="a-top-links" aria-label="Navegação do Analytics">
+    <a href="#indicadores">Indicadores</a><a href="#registros">Registros</a><a href="#metas">Metas</a>
+   </nav>
+   <div className="a-header-actions">
+    <a className="a-top-new" href="#registros" aria-label="Ir para novo registro"><Plus size={16}/><span>Novo registro</span></a>
+    <a className="a-return" href={BASE}><ArrowLeft size={16}/><span className="a-return-long">Marketing Control</span><span className="a-return-short">Voltar</span></a>
+   </div>
   </div></header>
   <section className="a-hero"><div className="a-frame a-hero-in">
    <div className="a-eyebrow">Reputação &amp; desempenho · Garden Café</div>
