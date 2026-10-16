@@ -171,6 +171,9 @@ body{background:var(--bg);color:var(--ink)}
 .reference-rich-copy{max-height:none;padding:22px 25px;border:1px solid #ebeae1;background:#fff; color:#535f53;font-size:13px;line-height:1.9}
 .reference-rich-copy p{margin:0 0 11px}
 .reference-rich-copy p:last-child{margin-bottom:0}
+.reference-rich-copy .trello-copy-heading{margin:20px 0 12px;color:#304b36;font-size:clamp(16px,2vw,21px);font-weight:720;line-height:1.35;letter-spacing:-.025em}
+.reference-rich-copy .trello-copy-heading:first-child{margin-top:0}
+.reference-rich-copy strong{color:#354f38;font-weight:750}
 .reference-review-note{display:grid;gap:5px;margin:18px 30px 0;padding:12px 14px;border:1px solid #eadfbd;border-radius:11px;background:#f7f1df;color:#776743;font-size:10px;line-height:1.55}
 .reference-review-note strong{font-size:9px;letter-spacing:.08em;text-transform:uppercase}
 .reference-modal-content>.recording-group{margin-bottom:9px;border:1px solid #e5e8df;border-radius:12px;background:#fff}
