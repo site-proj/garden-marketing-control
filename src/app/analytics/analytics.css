@@ -208,3 +208,14 @@
  .a-brand-caption{font-size:7px;letter-spacing:.02em}
  .a-top .a-header-actions .a-return{padding:8px}
 }
+
+/* Garden Analytics — mesmos títulos modernos do Garden Studio */
+.analytics-root h1,.analytics-root h2,.analytics-root h3,.analytics-root h4,
+.analytics-root .a-brand-word,.analytics-root .a-brand-studio{
+ font-family:'Space Grotesk',Arial,sans-serif !important;
+ font-style:normal;
+ font-weight:700;
+ letter-spacing:-.045em;
+}
+.analytics-root .a-brand-word{letter-spacing:-.025em;color:#377a4c}
+.analytics-root .a-brand-studio{letter-spacing:.045em}
