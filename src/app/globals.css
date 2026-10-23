@@ -424,3 +424,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 @media(max-width:750px){.feature-text h2{font-size:clamp(31px,8vw,42px)}.daily-ops-grid{gap:10px;margin-bottom:17px}.daily-inspiration{padding:21px 20px}.daily-mantra{margin-top:22px}.daily-inspiration h2{font-size:26px}.daily-checklist{padding:19px 18px 15px}.capture-library-grid{gap:9px 11px}.editorial-heading{align-items:flex-start;flex-direction:column;gap:10px}.editorial-heading h2{font-size:25px}.editorial-week{margin-right:-18px;padding-right:18px;grid-template-columns:repeat(7,minmax(155px,1fr))}.editorial-day{min-height:132px}.publish-questions{grid-template-columns:1fr}.channel-picker{align-items:flex-start;flex-direction:column}.channel-picker>div{justify-content:flex-start}}
 @media(max-width:390px){.daily-kicker{letter-spacing:.1em}.daily-kicker span{letter-spacing:.08em}.daily-inspiration{padding:19px 17px}.daily-checklist{padding:17px 15px}.daily-check-head h3{font-size:20px}.channel-picker button{padding:6px}.editorial-week{grid-template-columns:repeat(7,minmax(145px,1fr))}}
 @media(prefers-reduced-motion:reduce){.kpi,.phase-card,.surface,.btn{transition:none!important}}
+
+/* Garden Studio — padrão tipográfico aprovado para títulos */
+.shell h1,.shell h2,.shell h3,.shell h4,
+.garden-cover h1,.garden-cover h2,.garden-cover h3,
+.identity-wordmark strong,.identity-wordmark span,
+.gi-stage strong,.gi-mini,.gi-sig {
+ font-family:'Space Grotesk',Arial,sans-serif !important;
+ font-style:normal;
+}
+.shell h1,.shell h2,.shell h3,.shell h4{font-weight:700;letter-spacing:-.045em}
+.sidebar .identity .identity-wordmark strong{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700;color:#c6d2be !important;letter-spacing:-.035em}
+.sidebar .identity .identity-wordmark span{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700;color:#d9c28c}
+.garden-cover h1{font-weight:700 !important;letter-spacing:-.075em !important}
+.garden-cover h1 em{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700 !important;font-style:normal !important}
+.gi-stage strong,.gi-stage strong em{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700;font-style:normal}
