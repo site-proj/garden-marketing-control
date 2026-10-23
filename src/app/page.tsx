@@ -113,12 +113,12 @@ export default function Page(){
   <div aria-hidden="true" style={{position:'absolute',width:470,height:470,border:'1px solid #d4c69b16',borderRadius:'50%',left:'-280px',bottom:'-280px',pointerEvents:'none'}}/>
   <div style={{maxWidth:1250,margin:'0 auto',position:'relative',minHeight:'calc(100vh - 112px)',display:'flex',flexDirection:'column'}}>
     <header style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:15,flexWrap:'wrap',paddingBottom:25,borderBottom:'1px solid #d9e4d321'}}>
-      <div style={{display:'flex',alignItems:'baseline',gap:9,flexWrap:'wrap'}}><strong style={{fontFamily:"Georgia,'Times New Roman',serif",fontSize:24,color:'#c6d2be',letterSpacing:'.07em'}}>GARDEN</strong><span style={{fontSize:11,color:'#d4bf8b',letterSpacing:'.17em',fontWeight:700}}>/ STUDIO</span></div>
+      <div style={{display:'flex',alignItems:'baseline',gap:9,flexWrap:'wrap'}}><strong style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:24,color:'#c6d2be',letterSpacing:'.07em'}}>GARDEN</strong><span style={{fontSize:11,color:'#d4bf8b',letterSpacing:'.17em',fontWeight:700}}>/ STUDIO</span></div>
       <span style={{color:'#c6d2be',fontSize:10,letterSpacing:'.19em',fontWeight:650}}>MARKETING OPERATIONS</span>
     </header>
     <section style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'clamp(60px,9vh,115px) 0 58px',maxWidth:960}}>
       <div style={{display:'flex',alignItems:'center',gap:12,color:'#d7bf8a',fontWeight:750,letterSpacing:'.21em',fontSize:11,marginBottom:28}}><span style={{height:7,width:7,background:'#d7bf8a',borderRadius:'50%',boxShadow:'0 0 0 6px #d7bf8a20'}}/> INTELIGÊNCIA & CRIATIVIDADE</div>
-      <h1 style={{fontFamily:"Georgia,'Times New Roman',serif",fontSize:'clamp(61px,10.8vw,143px)',fontWeight:500,letterSpacing:'-.072em',lineHeight:.87,color:'#d7e0cf',margin:0}}>Garden<span style={{color:'#d7bf8a'}}>.</span><br/><em style={{color:'#d7bf8a',fontWeight:400}}>Studio</em></h1>
+      <h1 style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:'clamp(61px,10.8vw,143px)',fontWeight:500,letterSpacing:'-.072em',lineHeight:.87,color:'#d7e0cf',margin:0}}>Garden<span style={{color:'#d7bf8a'}}>.</span><br/><em style={{color:'#d7bf8a',fontWeight:400}}>Studio</em></h1>
       <div style={{height:1,width:84,background:'#d7bf8a',margin:'40px 0 25px'}}/>
       <p style={{fontSize:'clamp(15px,1.9vw,19px)',lineHeight:1.65,maxWidth:550,color:'#ccd6c9',fontWeight:400}}>Estratégia, conteúdo e resultados em um único lugar. Uma central para transformar ideias em movimento.</p>
       <div style={{display:'flex',gap:14,flexWrap:'wrap',marginTop:40}}>
