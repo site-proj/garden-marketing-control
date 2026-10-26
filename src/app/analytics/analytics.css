@@ -264,8 +264,8 @@
 @media(max-width:850px){.a-top-links{padding:3px}}
 @media(max-width:570px){.a-top-links{border:0;background:transparent;padding:0}.a-top-links a{padding:7px 9px}}
 /* Google identity accents for ratings and source attribution */
-.a-google-mark{display:inline-grid;place-items:center;flex:none;width:23px;height:23px;border:1px solid #e7ece7;border-radius:50%;background:#fff;background-clip:padding-box;color:transparent;font-family:Arial,sans-serif;font-size:16px;font-weight:750;line-height:1;background-image:linear-gradient(90deg,#4285F4 0 25%,#EA4335 25% 50%,#FBBC05 50% 75%,#34A853 75% 100%);-webkit-background-clip:text;background-clip:text;position:relative}
-.a-reputation-source .a-google-mark{width:20px;height:20px;font-size:14px;border:0}
+.a-google-mark{display:block;flex:none;width:23px;height:23px;overflow:visible}
+.a-reputation-source .a-google-mark{width:20px;height:20px}
 .a-reputation-source:before{display:none}
 .a-rating-line{flex-wrap:wrap;align-items:center;column-gap:12px}
 .a-rating-line strong{line-height:1}
