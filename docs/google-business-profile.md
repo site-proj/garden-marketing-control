@@ -21,3 +21,7 @@ Como o Garden Studio usa GitHub Pages estático, o arquivo agregado pode ser ace
 Se os três secrets ainda não estiverem cadastrados, o site compila e informa que a integração aguarda configuração. Depois de cadastrá-los, integre o PR e execute **Actions → Publish Garden Marketing Control → Run workflow** para a primeira coleta. A rotina diária mantém os dados atualizados.
 
 Os tokens do OAuth Playground não são presumidos nem incluídos no repositório. O refresh token precisa pertencer ao cliente OAuth rotacionado. Se a tela de consentimento OAuth estiver em modo de teste, inclua a conta autorizada entre os usuários de teste; refresh tokens de aplicativos externos em teste podem expirar após sete dias.
+
+## Se aparecer `invalid_client`
+
+Confira se os três valores foram copiados sem espaços no início ou no final e sem aspas. `GBP_CLIENT_ID` e `GBP_CLIENT_SECRET` precisam pertencer ao mesmo cliente OAuth; se você gerar um cliente novo, gere também outro refresh token com ele. No GitHub, edite os secrets existentes em vez de criar nomes alternativos.
