@@ -43,7 +43,7 @@ async function fetchReviews(accessToken) {
   let newestReviewTime = null;
 
   do {
-    const url = new URL(`https://mybusiness.googleapis.com/v4/${account}/locations/${location}/reviews`);
+    const url = new URL(`https://mybusiness.googleapis.com/v4/accounts/${account}/locations/${location}/reviews`);
     url.searchParams.set("pageSize", "50");
     if (pageToken) url.searchParams.set("pageToken", pageToken);
 
