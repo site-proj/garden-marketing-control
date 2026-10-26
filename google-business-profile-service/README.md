@@ -4,7 +4,7 @@ This small Node service keeps the OAuth refresh token and client secret on the s
 
 ## Runtime configuration
 
-Deploy this directory as a Cloud Run service in Google Cloud project `garden-analytics-511519`. Grant the runtime service account permission to verify Firebase ID tokens for the Garden Studio Firebase project. Store the OAuth secret and refresh token in Secret Manager and configure these Cloud Run variables:
+Deploy this directory as a Cloud Run service in Google Cloud project `garden-analytics-511519`. Use a dedicated Cloud Run runtime service identity with Application Default Credentials; no service-account key file is required in source. Store the OAuth secret and refresh token in Secret Manager and configure these Cloud Run variables:
 
 - `GOOGLE_CLIENT_ID`: OAuth client ID.
 - `GOOGLE_CLIENT_SECRET`: newly rotated OAuth client secret (Secret Manager reference).
@@ -26,7 +26,7 @@ The Garden Studio dashboard calls this endpoint only when `NEXT_PUBLIC_GBP_API_U
 ## Deploy
 
 1. In Google Cloud project `garden-analytics-511519`, deploy this directory to Cloud Run with Node.js 20 or later.
-2. Keep the OAuth client secret and refresh token in Secret Manager. Grant the Cloud Run runtime service identity access to those secrets and Firebase Authentication token verification.
+2. Keep the OAuth client secret and refresh token in Secret Manager. Grant the Cloud Run runtime identity access to those secret versions. Use Application Default Credentials; do not add a service-account key to the repository.
 3. Configure the variables listed above. Cloud Run invocation can be public because the endpoint independently verifies Firebase ID tokens and restricts the allowed UID; never remove that check.
 4. Set `NEXT_PUBLIC_GBP_API_URL` as a repository variable in GitHub, then publish the Garden Studio site.
 5. Sign in to the Garden Studio account whose UID is configured and use “Conectar e consultar avaliações” on Analytics.
