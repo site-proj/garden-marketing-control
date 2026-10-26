@@ -2,6 +2,8 @@ name: Publish Garden Marketing Control
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '17 9 * * *'
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,6 +22,12 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Fetch Google Business Profile summary
+        run: node scripts/fetch-google-business-profile.mjs
+        env:
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
       - name: Build static website
         run: npm run build
         env:
