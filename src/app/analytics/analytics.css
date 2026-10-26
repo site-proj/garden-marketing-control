@@ -248,3 +248,18 @@
 .a-reputation-grid .a-note{margin-top:14px}
 @media(max-width:850px){.a-reputation-grid{grid-template-columns:1fr}.a-reputation-head{align-items:flex-start}}
 @media(max-width:570px){.a-reputation-head{margin-top:44px}.a-reputation-source{font-size:10px;padding:8px 11px}.a-reputation-grid{gap:11px}.a-reputation-numbers>div{padding:13px}.a-reputation-numbers strong{font-size:25px}.a-projection-inputs{gap:9px;margin:18px 0 14px}.a-projection-inputs label{font-size:10px}.a-projection-inputs input{padding:11px 10px;font-size:13px}.a-projection-result{padding:15px}.a-projection-result strong{font-size:27px}}
+/* Visual cues adapted from the standalone Garden Analytics dashboard */
+.a-top-links{gap:4px;padding:5px;border:1px solid #e3e9e1;background:rgba(255,255,255,.76);border-radius:999px}
+.a-top-links a{padding:9px 12px;border-radius:999px;transition:background .18s,color .18s}
+.a-top-links a:hover{color:#214b33;background:#edf3eb}
+.a-reputation-head .a-eyebrow{color:#718b73}
+.a-reputation-card,.a-projection-card{position:relative;overflow:hidden}
+.a-reputation-card:before,.a-projection-card:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#477750,#c0a16a);opacity:.8}
+.a-reputation-source{display:inline-flex;align-items:center;gap:7px}
+.a-reputation-source:before{content:"";width:7px;height:7px;border-radius:50%;background:#5c9364;box-shadow:0 0 0 3px rgba(92,147,100,.12)}
+.a-rating-track{height:10px;background:linear-gradient(90deg,#edf1eb 0%,#f1e9dd 100%)}
+.a-rating-track span{background:linear-gradient(90deg,#477750 0%,#8b9b62 70%,#c0a16a 100%)}
+.a-key span:first-child i{box-shadow:0 0 0 3px rgba(49,92,66,.12)}
+.a-key span:last-child i{box-shadow:0 0 0 3px rgba(186,152,99,.16)}
+@media(max-width:850px){.a-top-links{padding:3px}}
+@media(max-width:570px){.a-top-links{border:0;background:transparent;padding:0}.a-top-links a{padding:7px 9px}}
