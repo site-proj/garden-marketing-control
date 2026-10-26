@@ -26,7 +26,9 @@ async function fetchAccessToken() {
   });
   const result = await response.json();
   if (!response.ok || !result.access_token) {
-    throw new Error("Google OAuth refresh failed; check the repository secrets and consent status.");
+    const knownCodes = new Set(["invalid_client", "invalid_grant", "unauthorized_client", "invalid_request"]);
+    const errorCode = knownCodes.has(result.error) ? result.error : "unknown";
+    throw new Error(`Google OAuth token request failed (HTTP ${response.status}, ${errorCode}).`);
   }
   return result.access_token;
 }
@@ -77,6 +79,7 @@ try {
   await writeFile(outputPath, JSON.stringify(summary, null, 2) + "\n");
   console.log("Google Business Profile aggregate summary refreshed.");
 } catch (error) {
+  await writeFile(outputPath, JSON.stringify({ available: false, reason: "temporarily_unavailable" }) + "\\n");
   console.error(error instanceof Error ? error.message : "Google Business Profile refresh failed.");
   process.exitCode = 1;
 }
