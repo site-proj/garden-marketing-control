@@ -10,7 +10,7 @@ No GitHub, abra **Settings → Secrets and variables → Actions → New reposit
 - `GBP_CLIENT_SECRET`: segredo OAuth novo, após a rotação.
 - `GBP_REFRESH_TOKEN`: refresh token obtido com esse cliente OAuth e com o escopo `https://www.googleapis.com/auth/business.manage`.
 
-Não coloque os valores no código, em variáveis `NEXT_PUBLIC_*), em commits ou nesta conversa. A rotina usa a conta `accounts/105765779662568090049` e o estabelecimento `locations/11536416076404130194`.
+Não coloque os valores no código, em variáveis `NEXT_PUBLIC_*`, em commits ou nesta conversa. A rotina usa a conta `accounts/105765779662568090049` e o estabelecimento `locations/11536416076404130194`.
 
 ## Funcionamento
 
