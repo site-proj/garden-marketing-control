@@ -23,6 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Fetch Google Business Profile summary
+        continue-on-error: true
         run: node scripts/fetch-google-business-profile.mjs
         env:
           GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
