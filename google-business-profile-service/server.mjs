@@ -64,8 +64,10 @@ async function googleAccessToken() {
 async function loadReviewSummary() {
   if (summaryCache.value && Date.now() < summaryCache.expiresAt) return summaryCache.value;
   const accessToken = await googleAccessToken();
-  const account = encodeURIComponent(process.env.GOOGLE_ACCOUNT_ID);
-  const location = encodeURIComponent(process.env.GOOGLE_LOCATION_ID);
+  const accountId = process.env.GOOGLE_ACCOUNT_ID.replace(/^accounts\\//, "");
+  const locationId = process.env.GOOGLE_LOCATION_ID.replace(/^locations\\//, "");
+  const account = encodeURIComponent(accountId);
+  const location = encodeURIComponent(locationId);
   let pageToken;
   let reviewCount = 0;
   let ratingSum = 0;
@@ -105,9 +107,7 @@ async function loadReviewSummary() {
   return summary;
 }
 
-const server = Bun?.serve
-  ? Bun.serve({ port, fetch: handleRequest })
-  : null;
+const server = null;
 
 async function handleRequest(request) {
   const origin = request.headers.get("origin");
