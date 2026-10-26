@@ -20,6 +20,12 @@ const fmt=(n:number)=>n.toLocaleString('pt-BR');
 const pct=(n:number)=>n.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
 const dateLabel=(date:string)=>new Date(date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
 const num=(value:unknown)=>typeof value==='number'&&Number.isFinite(value)?value:undefined;
+const reputationGoal=4.8;
+function reviewsNeeded(count:number,rating:number,incomingRating:number){
+ if(rating>=reputationGoal)return 0;
+ if(incomingRating<=reputationGoal)return null;
+ return Math.max(0,Math.ceil((reputationGoal-rating)*count/(incomingRating-reputationGoal)));
+}
 function calculated(entries:Entry[]){
  const ordered=[...entries].sort((a,b)=>a.date.localeCompare(b.date));
  return ordered.map((e,i)=>{
@@ -44,6 +50,7 @@ export default function AnalyticsPage(){
  const [form,setForm]=useState<FormData>(emptyForm),[sync,setSync]=useState('Conectando…'),[saving,setSaving]=useState(false);
  const [days,setDays]=useState(30),[csvResult,setCsvResult]=useState<{scans:number,rows:number}|null>(null),[csvMessage,setCsvMessage]=useState('');
  const [googleSummary,setGoogleSummary]=useState<{reviewCount:number,averageRating:number|null,newestReviewTime:string|null,fetchedAt:string}|null>(null),[googleStatus,setGoogleStatus]=useState('');
+ const [futureRating,setFutureRating]=useState('5'),[monthlyReviews,setMonthlyReviews]=useState('30');
  useEffect(()=>{if(!auth){setChecked(true);setSync('Firebase não configurado');return;}return onAuthStateChanged(auth,u=>{setUser(u);setChecked(true)})},[]);
  useEffect(()=>{if(!user||!db)return;setSync('Carregando');return onSnapshot(doc(db,'users',user.uid,'data','analytics'),snapshot=>{const value=snapshot.data();setEntries(Array.isArray(value?.entries)?value.entries:[]);setSync('Sincronizado')},()=>setSync('Falha na sincronização — verifique o acesso'))},[user]);
  const ordered=useMemo(()=>calculated(entries),[entries]);
@@ -56,6 +63,13 @@ export default function AnalyticsPage(){
  const conversion=comparableScans>0?pct(reviewCount/comparableScans*100):'—';
  const latest=[...ordered].reverse().find(e=>num(e.total)!==undefined);
  const lastRating=[...ordered].reverse().find(e=>e.rating)?.rating||'—';
+ const parsedLastRating=Number(lastRating.replace(',','.'));
+ const currentRating=googleSummary?.averageRating??(Number.isFinite(parsedLastRating)&&parsedLastRating>=1&&parsedLastRating<=5?parsedLastRating:4.73);
+ const currentReviewCount=googleSummary?.reviewCount??(latest?Number(latest.total):1084);
+ const incomingRating=Number(futureRating),monthlyRate=Number(monthlyReviews);
+ const reviewsToGoal=reviewsNeeded(currentReviewCount,currentRating,5);
+ const projectedReviews=reviewsNeeded(currentReviewCount,currentRating,incomingRating);
+ const projectionMonths=projectedReviews!==null&&monthlyRate>0?projectedReviews/monthlyRate:null;
  const goals=[1500,2000].map(target=>({target,remaining:latest?Math.max(0,target-Number(latest.total)):null,percentage:latest?Math.min(100,Number(latest.total)/target*100):0}));
  const chart=selected.map(e=>({name:dateLabel(e.date),scans:e.scans,reviews:typeof e.derivedReviews==='number'&&e.derivedReviews>=0?e.derivedReviews:null}));
  async function store(next:Entry[]){if(!user||!db)return;setSaving(true);setSync('Salvando…');try{await setDoc(doc(db,'users',user.uid,'data','analytics'),{entries:next,updatedAt:new Date().toISOString()});setSync('Sincronizado')}catch(err){setSync('Erro ao salvar — confira as permissões');alert('Não foi possível salvar. Tente novamente.')}finally{setSaving(false)}}
@@ -72,6 +86,7 @@ export default function AnalyticsPage(){
    setGoogleSummary(summary);setGoogleStatus('Última atualização: '+new Date(summary.fetchedAt).toLocaleString('pt-BR'));
   }catch{setGoogleStatus('Não foi possível carregar o resumo publicado. Tente novamente mais tarde.');}
  }
+ useEffect(()=>{if(user)void refreshGoogleSummary();},[user]);
  function add(e:React.FormEvent){e.preventDefault();const scans=Number(form.scans),reviews=form.reviews===''?undefined:Number(form.reviews),total=form.total===''?undefined:Number(form.total);if(!form.date||form.scans===''||!Number.isInteger(scans)||scans<0||(reviews!==undefined&&(!Number.isInteger(reviews)||reviews<0))||(total!==undefined&&(!Number.isInteger(total)||total<0))){alert('Confira a data e os números não negativos.');return;}
  const old=entries.find(x=>x.date===form.date);if(old&&!window.confirm('Já existe registro para essa data. Deseja substituí-lo?'))return;
  const entry:Entry={id:old?.id||crypto.randomUUID(),date:form.date,scans,reviews,total,rating:form.rating.trim(),notes:form.notes.trim(),recordedAt:new Date().toISOString()};
@@ -91,7 +106,7 @@ export default function AnalyticsPage(){
     <span className="a-brand-caption">CENTRAL DE INTELIGÊNCIA</span>
    </a>
    <nav className="a-top-links" aria-label="Navegação do Analytics">
-    <a href="#indicadores">Indicadores</a><a href="#registros">Registros</a><a href="#metas">Metas</a>
+    <a href="#reputacao">Reputação &amp; Experiência</a><a href="#indicadores">Indicadores</a><a href="#registros">Registros</a><a href="#metas">Metas</a>
    </nav>
    <div className="a-header-actions">
     <a className="a-top-new" href="#registros" aria-label="Ir para novo registro"><Plus size={16}/><span>Novo registro</span></a>
@@ -107,6 +122,11 @@ export default function AnalyticsPage(){
   <main className="a-main a-frame">
   {!checked?<section className="a-card" style={{marginTop:-68,position:'relative'}}>Verificando autenticação…</section>:!user?<section className="a-card" style={{marginTop:-68,position:'relative',maxWidth:620}}><h2>Área privada</h2><p className="a-sub" style={{margin:'14px 0 20px'}}>Entre no Garden Studio com seu e-mail e senha para acessar o Analytics.</p><a className="a-btn" href={BASE}>Entrar no Studio <ChevronRight size={17}/></a></section>:<>
    <section className="a-kpis" aria-label="Resumo dos resultados">{metrics.map(x=><div className="a-kpi" key={x.label}><div className="a-kpi-label"><span>{x.label}</span><span className="a-kpi-icon"><x.Icon size={17}/></span></div><strong>{x.value}</strong><small>{x.desc}</small></div>)}</section>
+   <div className="a-pagehead a-reputation-head" id="reputacao"><div><span className="a-eyebrow">Experiência que vira reputação</span><h2>Reputação &amp; Experiência.</h2><p className="a-sub">A distância até 4,8, com uma projeção baseada no ritmo de novas avaliações.</p></div><span className="a-reputation-source">{googleSummary?'Google · atualizado '+new Date(googleSummary.fetchedAt).toLocaleDateString('pt-BR'):'Base informada · Google pendente'}</span></div>
+   <section className="a-reputation-grid" aria-label="Distância até a meta de nota 4,8 e projeção">
+    <article className="a-card a-reputation-card"><div className="a-reputation-overline"><span>Distância até 4,8</span><span>Meta visual</span></div><div className="a-rating-line"><strong>{currentRating.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</strong><span>nota média Google</span></div><div className="a-rating-track" role="progressbar" aria-label="Nota média atual em relação à meta de 4,8" aria-valuemin={0} aria-valuemax={4.8} aria-valuenow={currentRating}><span style={{width:Math.min(100,currentRating/reputationGoal*100)+'%'}}/></div><div className="a-rating-scale"><span>0</span><span>4,8</span></div><div className="a-reputation-numbers"><div><small>Avaliações atuais</small><strong>{fmt(currentReviewCount)}</strong></div><div><small>{currentRating>=reputationGoal?'Meta alcançada':'Faltam · cenário 5 estrelas'}</small><strong>{reviewsToGoal===null?'—':reviewsToGoal===0?'✓':fmt(reviewsToGoal)}</strong></div></div><p className="a-note">A nota e a contagem usam o resumo do Google quando disponível; sem ele, partem dos dados informados: 1.084 avaliações e nota 4,73.</p></article>
+    <article className="a-card a-projection-card"><div className="a-card-title"><div><h3>Projeção para a meta</h3><p>Simule a quantidade e o prazo com novas avaliações.</p></div><Target color="#497757" size={20}/></div><div className="a-projection-inputs"><label>Nota média das novas<input type="number" min="1" max="5" step="0.1" value={futureRating} onChange={e=>setFutureRating(e.target.value)}/></label><label>Novas avaliações / mês<input type="number" min="1" step="1" value={monthlyReviews} onChange={e=>setMonthlyReviews(e.target.value)}/></label></div><div className="a-projection-result"><strong>{projectedReviews===null?'Meta não alcançável':projectedReviews===0?'Meta atingida':fmt(projectedReviews)+' avaliações'}</strong><span>{projectionMonths===null?(projectedReviews===null?'A média futura precisa superar 4,8.':'Informe o ritmo mensal para estimar o prazo.'):'≈ '+projectionMonths.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' meses neste ritmo'}</span></div><p className="a-note">Estimativa matemática pela média agregada atual. Scans de QR Code e avaliações são métricas distintas; esta projeção não atribui uma avaliação a um scan.</p></article>
+   </section>
    <div className="a-pagehead" id="indicadores"><div><span className="a-eyebrow">Performance em foco</span><h2>Visão dos resultados.</h2><p className="a-sub">Evolução com base nas informações registradas, sem dados fictícios.</p></div><div className="a-ctrls" aria-label="Filtrar período">{[{n:7,label:'7 dias'},{n:30,label:'30 dias'},{n:90,label:'90 dias'},{n:0,label:'Tudo'}].map(d=><button key={d.n} className={days===d.n?'active':''} onClick={()=>setDays(d.n)}>{d.label}</button>)}</div></div>
    <div className="a-grid">
     <section className="a-card"><div className="a-card-title"><div><h3>Evolução da reputação</h3><p>Scans de QR Code e novas avaliações informadas</p></div><span className="a-card-label">Por período</span></div><div className="a-chart">{chart.length>=2?<ResponsiveContainer width="100%" height="100%"><ComposedChart data={chart} margin={{top:12,right:5,bottom:0,left:0}}><CartesianGrid stroke="#eaf0e8" vertical={false}/><XAxis dataKey="name" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="scans" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="reviews" orientation="right" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#a58d60'}}/><Tooltip contentStyle={{border:'1px solid #e8eee6',borderRadius:12,fontSize:12}}/><Bar yAxisId="scans" dataKey="scans" name="Scans" fill="#315c42" radius={[5,5,0,0]} maxBarSize={26}/><Line yAxisId="reviews" type="monotone" dataKey="reviews" name="Avaliações" stroke="#ba9863" strokeWidth={3} dot={{r:3}} connectNulls={false}/></ComposedChart></ResponsiveContainer>:<div className="a-chart-empty">Registre pelo menos dois períodos para visualizar a evolução.</div>}</div><div className="a-key"><span><i style={{background:'#315c42'}}/>Scans</span><span><i style={{background:'#ba9863'}}/>Avaliações informadas</span></div></section>
