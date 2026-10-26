@@ -219,3 +219,32 @@
 }
 .analytics-root .a-brand-word{letter-spacing:-.025em;color:#377a4c}
 .analytics-root .a-brand-studio{letter-spacing:.045em}
+
+/* Reputation & Experience — Garden Analytics */
+.a-reputation-head{margin-top:48px;align-items:center}
+.a-reputation-source{border:1px solid #e1eae0;border-radius:999px;background:#f7faf6;padding:9px 13px;color:#6d8170;font-size:11px;font-weight:650}
+.a-reputation-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:18px}
+.a-reputation-card{background:linear-gradient(140deg,#fff 58%,#f6f8f3);border-color:#e3e9df}
+.a-reputation-overline{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#718473;font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
+.a-reputation-overline span:last-child{color:#ad8950}
+.a-rating-line{display:flex;align-items:baseline;gap:12px;margin:12px 0 5px}
+.a-rating-line strong{font-size:clamp(64px,8vw,92px);font-weight:700;line-height:.95;letter-spacing:-.085em;color:#244d34}
+.a-rating-line span{color:#809084;font-size:13px}
+.a-rating-track{height:8px;margin-top:22px;border-radius:99px;background:#e9efe7;overflow:hidden}
+.a-rating-track span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#477750,#c0a16a);transition:width .4s}
+.a-rating-scale{display:flex;justify-content:space-between;margin-top:6px;color:#97a397;font-size:10px}
+.a-reputation-numbers{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:23px}
+.a-reputation-numbers>div{padding:15px 16px;border:1px solid #e9eee7;border-radius:15px;background:rgba(255,255,255,.8)}
+.a-reputation-numbers small{display:block;color:#839186;font-size:11px;line-height:1.4}
+.a-reputation-numbers strong{display:block;margin-top:5px;color:#254c34;font-size:28px;font-weight:700;letter-spacing:-.05em}
+.a-projection-card{display:flex;flex-direction:column}
+.a-projection-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 18px}
+.a-projection-inputs label{display:grid;gap:7px;color:#65776a;font-size:11px;font-weight:700}
+.a-projection-inputs input{width:100%;min-width:0;border:1px solid #dfe7dc;border-radius:12px;background:#fafcf9;padding:12px;color:#1f3728;font-size:14px}
+.a-projection-inputs input:focus{outline:3px solid #e5f0e5;border-color:#648e6e}
+.a-projection-result{display:grid;gap:5px;border:1px solid #e8e5d9;border-radius:16px;background:linear-gradient(120deg,#f6f8f2,#fbfaf5);padding:18px}
+.a-projection-result strong{color:#315a3d;font-size:clamp(25px,3.2vw,35px);letter-spacing:-.05em;line-height:1.12}
+.a-projection-result span{color:#78877a;font-size:12px}
+.a-reputation-grid .a-note{margin-top:14px}
+@media(max-width:850px){.a-reputation-grid{grid-template-columns:1fr}.a-reputation-head{align-items:flex-start}}
+@media(max-width:570px){.a-reputation-head{margin-top:44px}.a-reputation-source{font-size:10px;padding:8px 11px}.a-reputation-grid{gap:11px}.a-reputation-numbers>div{padding:13px}.a-reputation-numbers strong{font-size:25px}.a-projection-inputs{gap:9px;margin:18px 0 14px}.a-projection-inputs label{font-size:10px}.a-projection-inputs input{padding:11px 10px;font-size:13px}.a-projection-result{padding:15px}.a-projection-result strong{font-size:27px}}
