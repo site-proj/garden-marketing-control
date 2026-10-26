@@ -66,7 +66,7 @@ export default function AnalyticsPage(){
   setGoogleStatus('Consultando avaliações…');
   try{
    const idToken=await user.getIdToken();
-   const response=await fetch(endpoint.replace(/\\/$/,'')+'/api/google/reviews/summary',{headers:{Authorization:'Bearer '+idToken}});
+   const response=await fetch((endpoint.endsWith('/')?endpoint.slice(0,-1):endpoint)+'/api/google/reviews/summary',{headers:{Authorization:'Bearer '+idToken}});
    if(!response.ok)throw new Error('Consulta indisponível');
    const summary=await response.json();
    if(typeof summary.reviewCount!=='number')throw new Error('Resposta inválida');
