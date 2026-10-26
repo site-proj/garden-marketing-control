@@ -43,6 +43,7 @@ export default function AnalyticsPage(){
  const [user,setUser]=useState<User|null>(null),[checked,setChecked]=useState(false),[entries,setEntries]=useState<Entry[]>([]);
  const [form,setForm]=useState<FormData>(emptyForm),[sync,setSync]=useState('Conectando…'),[saving,setSaving]=useState(false);
  const [days,setDays]=useState(30),[csvResult,setCsvResult]=useState<{scans:number,rows:number}|null>(null),[csvMessage,setCsvMessage]=useState('');
+ const [googleSummary,setGoogleSummary]=useState<{reviewCount:number,averageRating:number|null,newestReviewTime:string|null,fetchedAt:string}|null>(null),[googleStatus,setGoogleStatus]=useState('');
  useEffect(()=>{if(!auth){setChecked(true);setSync('Firebase não configurado');return;}return onAuthStateChanged(auth,u=>{setUser(u);setChecked(true)})},[]);
  useEffect(()=>{if(!user||!db)return;setSync('Carregando');return onSnapshot(doc(db,'users',user.uid,'data','analytics'),snapshot=>{const value=snapshot.data();setEntries(Array.isArray(value?.entries)?value.entries:[]);setSync('Sincronizado')},()=>setSync('Falha na sincronização — verifique o acesso'))},[user]);
  const ordered=useMemo(()=>calculated(entries),[entries]);
@@ -58,6 +59,20 @@ export default function AnalyticsPage(){
  const goals=[1500,2000].map(target=>({target,remaining:latest?Math.max(0,target-Number(latest.total)):null,percentage:latest?Math.min(100,Number(latest.total)/target*100):0}));
  const chart=selected.map(e=>({name:dateLabel(e.date),scans:e.scans,reviews:typeof e.derivedReviews==='number'&&e.derivedReviews>=0?e.derivedReviews:null}));
  async function store(next:Entry[]){if(!user||!db)return;setSaving(true);setSync('Salvando…');try{await setDoc(doc(db,'users',user.uid,'data','analytics'),{entries:next,updatedAt:new Date().toISOString()});setSync('Sincronizado')}catch(err){setSync('Erro ao salvar — confira as permissões');alert('Não foi possível salvar. Tente novamente.')}finally{setSaving(false)}}
+ async function refreshGoogleSummary(){
+  const endpoint=process.env.NEXT_PUBLIC_GBP_API_URL;
+  if(!endpoint){setGoogleStatus('Configure o endereço do serviço Google no build do site.');return;}
+  if(!user){setGoogleStatus('Entre no Garden Studio para consultar.');return;}
+  setGoogleStatus('Consultando avaliações…');
+  try{
+   const idToken=await user.getIdToken();
+   const response=await fetch(endpoint.replace(/\\/$/,'')+'/api/google/reviews/summary',{headers:{Authorization:'Bearer '+idToken}});
+   if(!response.ok)throw new Error('Consulta indisponível');
+   const summary=await response.json();
+   if(typeof summary.reviewCount!=='number')throw new Error('Resposta inválida');
+   setGoogleSummary(summary);setGoogleStatus('Atualizado em '+new Date(summary.fetchedAt).toLocaleString('pt-BR'));
+  }catch{setGoogleStatus('Não foi possível consultar agora. Verifique a configuração do serviço.');}
+ }
  function add(e:React.FormEvent){e.preventDefault();const scans=Number(form.scans),reviews=form.reviews===''?undefined:Number(form.reviews),total=form.total===''?undefined:Number(form.total);if(!form.date||form.scans===''||!Number.isInteger(scans)||scans<0||(reviews!==undefined&&(!Number.isInteger(reviews)||reviews<0))||(total!==undefined&&(!Number.isInteger(total)||total<0))){alert('Confira a data e os números não negativos.');return;}
  const old=entries.find(x=>x.date===form.date);if(old&&!window.confirm('Já existe registro para essa data. Deseja substituí-lo?'))return;
  const entry:Entry={id:old?.id||crypto.randomUUID(),date:form.date,scans,reviews,total,rating:form.rating.trim(),notes:form.notes.trim(),recordedAt:new Date().toISOString()};
@@ -98,7 +113,7 @@ export default function AnalyticsPage(){
     <section className="a-card"><div className="a-card-title"><div><h3>Evolução da reputação</h3><p>Scans de QR Code e novas avaliações informadas</p></div><span className="a-card-label">Por período</span></div><div className="a-chart">{chart.length>=2?<ResponsiveContainer width="100%" height="100%"><ComposedChart data={chart} margin={{top:12,right:5,bottom:0,left:0}}><CartesianGrid stroke="#eaf0e8" vertical={false}/><XAxis dataKey="name" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="scans" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="reviews" orientation="right" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#a58d60'}}/><Tooltip contentStyle={{border:'1px solid #e8eee6',borderRadius:12,fontSize:12}}/><Bar yAxisId="scans" dataKey="scans" name="Scans" fill="#315c42" radius={[5,5,0,0]} maxBarSize={26}/><Line yAxisId="reviews" type="monotone" dataKey="reviews" name="Avaliações" stroke="#ba9863" strokeWidth={3} dot={{r:3}} connectNulls={false}/></ComposedChart></ResponsiveContainer>:<div className="a-chart-empty">Registre pelo menos dois períodos para visualizar a evolução.</div>}</div><div className="a-key"><span><i style={{background:'#315c42'}}/>Scans</span><span><i style={{background:'#ba9863'}}/>Avaliações informadas</span></div></section>
     <div className="a-sidegrid">
      <section className="a-card" id="metas"><div className="a-card-title"><div><h3>Metas de reputação</h3><p>Acompanhamento do total acumulado no Google</p></div><Target color="#497757" size={20}/></div><div className="a-goals">{goals.map(g=><div className="a-goal" key={g.target}><div className="a-goal-top"><strong>{fmt(g.target)} avaliações</strong><span>{latest?pct(g.percentage):'Sem base'}</span></div><div className="a-progress"><span style={{width:g.percentage+'%'}}/></div><small>{g.remaining===null?'Informe o total Google para calcular':g.remaining===0?'Meta alcançada':'Faltam '+fmt(g.remaining)+' avaliações'}</small></div>)}</div><p className="a-note">Total Google registrado: {latest?fmt(Number(latest.total)):'não informado'} · Nota: {lastRating}</p></section>
-     <section className="a-card a-source"><span className="a-src-status">Integração automática pendente</span><h3>Google Reviews</h3><p>A aprovação e autorização da API do Perfil da Empresa no Google ainda precisam ser confirmadas. A coleta de scans também depende de uma fonte autorizada.</p><p style={{marginTop:14}}>A rotina de 02h não realiza a coleta nesta versão.</p></section>
+     <section className="a-card a-source"><span className="a-src-status">{googleSummary?'Google conectado':'Google Business Profile'}</span><h3>Google Reviews</h3><p>Resumo ao vivo da conta Garden Café e Gastronomia. O acesso é protegido pelo login do Garden Studio; o segredo OAuth permanece no serviço privado.</p>{googleSummary&&<p style={{marginTop:14}}><strong>{fmt(googleSummary.reviewCount)}</strong> avaliações · nota média <strong>{googleSummary.averageRating?.toLocaleString('pt-BR',{maximumFractionDigits:2})||'—'}</strong>{googleSummary.newestReviewTime&&<> · avaliação mais recente {new Date(googleSummary.newestReviewTime).toLocaleDateString('pt-BR')}</>}</p>}<button className="a-btn a-btn-outline" type="button" onClick={()=>void refreshGoogleSummary()}>{googleSummary?'Atualizar avaliações':'Conectar e consultar avaliações'}</button>{googleStatus&&<p className="a-note" role="status">{googleStatus}</p>}<p style={{marginTop:14}}>A coleta de scans continua usando os registros e relatórios existentes.</p></section>
     </div>
    </div>
    <div className="a-pagehead" id="registros"><div><span className="a-eyebrow">Controle operacional</span><h2>Registre. Compare. Evolua.</h2><p className="a-sub">Os dados são salvos no Firebase da sua conta, separados do Marketing Control.</p></div></div>
