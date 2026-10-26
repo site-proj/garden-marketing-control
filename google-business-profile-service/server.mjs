@@ -64,8 +64,10 @@ async function googleAccessToken() {
 async function loadReviewSummary() {
   if (summaryCache.value && Date.now() < summaryCache.expiresAt) return summaryCache.value;
   const accessToken = await googleAccessToken();
-  const accountId = process.env.GOOGLE_ACCOUNT_ID.replace(/^accounts\\//, "");
-  const locationId = process.env.GOOGLE_LOCATION_ID.replace(/^locations\\//, "");
+  const accountName = process.env.GOOGLE_ACCOUNT_ID;
+  const locationName = process.env.GOOGLE_LOCATION_ID;
+  const accountId = accountName.startsWith("accounts/") ? accountName.slice("accounts/".length) : accountName;
+  const locationId = locationName.startsWith("locations/") ? locationName.slice("locations/".length) : locationName;
   const account = encodeURIComponent(accountId);
   const location = encodeURIComponent(locationId);
   let pageToken;
