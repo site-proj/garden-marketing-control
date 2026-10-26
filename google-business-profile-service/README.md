@@ -1,34 +1,23 @@
-# Google Business Profile summary service
+# Google Business Profile no Garden Analytics
 
-This small Node service keeps the OAuth refresh token and client secret on the server. It exposes only a summary (review count, average rating, latest review time), not reviewer names or review text. Requests require a Firebase ID token from the existing Garden Studio login and are restricted to one configured Firebase UID. Results are cached in memory for five minutes.
+A integração usa GitHub Actions para atualizar uma página estática diariamente. Não precisa de Cloud Run, Secret Manager nem de uma conta de faturamento no Google Cloud.
 
-## Runtime configuration
+## Secrets do repositório
 
-Deploy this directory as a Cloud Run service in Google Cloud project `garden-analytics-511519`. Use a dedicated Cloud Run runtime service identity with Application Default Credentials; no service-account key file is required in source. Store the OAuth secret and refresh token in Secret Manager and configure these Cloud Run variables:
+No GitHub, abra **Settings → Secrets and variables → Actions → New repository secret** e crie estes três secrets:
 
-- `GOOGLE_CLIENT_ID`: OAuth client ID.
-- `GOOGLE_CLIENT_SECRET`: newly rotated OAuth client secret (Secret Manager reference).
-- `GOOGLE_REFRESH_TOKEN`: refresh token generated for this OAuth client with the `https://www.googleapis.com/auth/business.manage` scope (Secret Manager reference).
-- `GOOGLE_ACCOUNT_ID`: `accounts/105765779662568090049`.
-- `GOOGLE_LOCATION_ID`: `locations/11536416076404130194`.
-- `GOOGLE_ALLOWED_FIREBASE_UID`: UID for the Garden Studio account allowed to see the summary.
-- `FIREBASE_PROJECT_ID`: `garden-marketing-control`.
-- `ALLOWED_ORIGIN`: `https://site-proj.github.io`.
+- `GBP_CLIENT_ID`: ID do cliente OAuth.
+- `GBP_CLIENT_SECRET`: segredo OAuth novo, após a rotação.
+- `GBP_REFRESH_TOKEN`: refresh token obtido com esse cliente OAuth e com o escopo `https://www.googleapis.com/auth/business.manage`.
 
-The OAuth consent must be granted by an account with access to the listed Business Profile. OAuth Playground tokens are not read from the repository and must not be assumed available to this service.
+Não coloque os valores no código, em variáveis `NEXT_PUBLIC_*), em commits ou nesta conversa. A rotina usa a conta `accounts/105765779662568090049` e o estabelecimento `locations/11536416076404130194`.
 
-## Endpoint and dashboard
+## Funcionamento
 
-The endpoint is `GET /api/google/reviews/summary` with `Authorization: Bearer <Firebase ID token>`. The response contains aggregate review metrics only. Non-Garden Studio users are rejected.
+O workflow de publicação roda quando há alteração em `main`, pode ser iniciado manualmente e também roda diariamente. Durante o build, ele troca o refresh token por um access token e consulta as avaliações. O arquivo publicado contém somente a contagem, a média, a data mais recente e o horário da coleta. Não inclui nomes, comentários, OAuth tokens ou segredos.
 
-The Garden Studio dashboard calls this endpoint only when `NEXT_PUBLIC_GBP_API_URL` is set at build time. Add a GitHub Actions repository variable with that exact name and the Cloud Run service's base URL (no trailing slash). It is a public URL, not a secret. The deploy workflow passes it only to the static build. The existing Firebase login, Firestore history, manual entries, CSV import/export, and scan reporting continue to work independently.
+Como o GitHub Pages é estático, esse resumo agregado pode ser lido publicamente. A página do Garden Analytics continua exigindo login para o painel; as funcionalidades existentes de histórico Firebase, registros manuais, CSV e scans permanecem independentes.
 
-## Deploy
+Se os três secrets ainda não estiverem cadastrados, o site compila e mostra que a integração aguarda configuração. Depois de cadastrá-los, execute **Actions → Publish Garden Marketing Control → Run workflow** para a primeira coleta. A rotina diária mantém os dados atualizados.
 
-1. In Google Cloud project `garden-analytics-511519`, deploy this directory to Cloud Run with Node.js 20 or later.
-2. Keep the OAuth client secret and refresh token in Secret Manager. Grant the Cloud Run runtime identity access to those secret versions. Use Application Default Credentials; do not add a service-account key to the repository.
-3. Configure the variables listed above. Cloud Run invocation can be public because the endpoint independently verifies Firebase ID tokens and restricts the allowed UID; never remove that check.
-4. Set `NEXT_PUBLIC_GBP_API_URL` as a repository variable in GitHub, then publish the Garden Studio site.
-5. Sign in to the Garden Studio account whose UID is configured and use “Conectar e consultar avaliações” on Analytics.
-
-No secret belongs in GitHub source, the static frontend, or a `NEXT_PUBLIC_*` variable. The current Garden Studio deployment is a static GitHub Pages export, so the API must remain a separate server-side service.
+Os tokens do OAuth Playground não são presumidos nem incluídos no repositório. O refresh token precisa pertencer ao cliente OAuth rotacionado. Se a tela de consentimento OAuth estiver em modo de teste, confirme que a conta autorizada está incluída entre os usuários de teste e considere que refresh tokens de aplicativos externos em teste podem expirar após sete dias.

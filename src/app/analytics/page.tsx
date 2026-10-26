@@ -60,18 +60,17 @@ export default function AnalyticsPage(){
  const chart=selected.map(e=>({name:dateLabel(e.date),scans:e.scans,reviews:typeof e.derivedReviews==='number'&&e.derivedReviews>=0?e.derivedReviews:null}));
  async function store(next:Entry[]){if(!user||!db)return;setSaving(true);setSync('Salvando…');try{await setDoc(doc(db,'users',user.uid,'data','analytics'),{entries:next,updatedAt:new Date().toISOString()});setSync('Sincronizado')}catch(err){setSync('Erro ao salvar — confira as permissões');alert('Não foi possível salvar. Tente novamente.')}finally{setSaving(false)}}
  async function refreshGoogleSummary(){
-  const endpoint=process.env.NEXT_PUBLIC_GBP_API_URL;
-  if(!endpoint){setGoogleStatus('Configure o endereço do serviço Google no build do site.');return;}
-  if(!user){setGoogleStatus('Entre no Garden Studio para consultar.');return;}
-  setGoogleStatus('Consultando avaliações…');
+  setGoogleStatus('Consultando o último resumo publicado…');
   try{
-   const idToken=await user.getIdToken();
-   const response=await fetch((endpoint.endsWith('/')?endpoint.slice(0,-1):endpoint)+'/api/google/reviews/summary',{headers:{Authorization:'Bearer '+idToken}});
-   if(!response.ok)throw new Error('Consulta indisponível');
+   const response=await fetch(BASE+'data/google-business-profile-summary.json?updated='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw new Error('Resumo indisponível');
    const summary=await response.json();
-   if(typeof summary.reviewCount!=='number')throw new Error('Resposta inválida');
-   setGoogleSummary(summary);setGoogleStatus('Atualizado em '+new Date(summary.fetchedAt).toLocaleString('pt-BR'));
-  }catch{setGoogleStatus('Não foi possível consultar agora. Verifique a configuração do serviço.');}
+   if(summary.available!==true||typeof summary.reviewCount!=='number'){
+    setGoogleSummary(null);setGoogleStatus('Integração aguardando os secrets OAuth no GitHub. Depois de configurados, a atualização diária publicará os dados.');
+    return;
+   }
+   setGoogleSummary(summary);setGoogleStatus('Última atualização: '+new Date(summary.fetchedAt).toLocaleString('pt-BR'));
+  }catch{setGoogleStatus('Não foi possível carregar o resumo publicado. Tente novamente mais tarde.');}
  }
  function add(e:React.FormEvent){e.preventDefault();const scans=Number(form.scans),reviews=form.reviews===''?undefined:Number(form.reviews),total=form.total===''?undefined:Number(form.total);if(!form.date||form.scans===''||!Number.isInteger(scans)||scans<0||(reviews!==undefined&&(!Number.isInteger(reviews)||reviews<0))||(total!==undefined&&(!Number.isInteger(total)||total<0))){alert('Confira a data e os números não negativos.');return;}
  const old=entries.find(x=>x.date===form.date);if(old&&!window.confirm('Já existe registro para essa data. Deseja substituí-lo?'))return;
@@ -103,7 +102,7 @@ export default function AnalyticsPage(){
    <div className="a-eyebrow">Reputação &amp; desempenho · Garden Café</div>
    <h1>Garden <em>Analytics.</em></h1>
    <p>Avaliações Google, scans de QR Code e metas em uma visão clara para orientar suas decisões.</p>
-   <div className="a-hero-footer"><span className="a-chip"><span className="a-chip-dot"/>{checked?(user?'Acesso autenticado':'Aguardando login'):'Verificando acesso'}</span><span className="a-chip"><Cloud size={14}/> {sync}</span><span className="a-hero-note">Dados manuais · API Google pendente</span></div>
+   <div className="a-hero-footer"><span className="a-chip"><span className="a-chip-dot"/>{checked?(user?'Acesso autenticado':'Aguardando login'):'Verificando acesso'}</span><span className="a-chip"><Cloud size={14}/> {sync}</span><span className="a-hero-note">Dados manuais · resumo Google atualizado diariamente</span></div>
   </div></section>
   <main className="a-main a-frame">
   {!checked?<section className="a-card" style={{marginTop:-68,position:'relative'}}>Verificando autenticação…</section>:!user?<section className="a-card" style={{marginTop:-68,position:'relative',maxWidth:620}}><h2>Área privada</h2><p className="a-sub" style={{margin:'14px 0 20px'}}>Entre no Garden Studio com seu e-mail e senha para acessar o Analytics.</p><a className="a-btn" href={BASE}>Entrar no Studio <ChevronRight size={17}/></a></section>:<>
@@ -113,7 +112,7 @@ export default function AnalyticsPage(){
     <section className="a-card"><div className="a-card-title"><div><h3>Evolução da reputação</h3><p>Scans de QR Code e novas avaliações informadas</p></div><span className="a-card-label">Por período</span></div><div className="a-chart">{chart.length>=2?<ResponsiveContainer width="100%" height="100%"><ComposedChart data={chart} margin={{top:12,right:5,bottom:0,left:0}}><CartesianGrid stroke="#eaf0e8" vertical={false}/><XAxis dataKey="name" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="scans" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#87998b'}}/><YAxis yAxisId="reviews" orientation="right" tickLine={false} axisLine={false} tick={{fontSize:11,fill:'#a58d60'}}/><Tooltip contentStyle={{border:'1px solid #e8eee6',borderRadius:12,fontSize:12}}/><Bar yAxisId="scans" dataKey="scans" name="Scans" fill="#315c42" radius={[5,5,0,0]} maxBarSize={26}/><Line yAxisId="reviews" type="monotone" dataKey="reviews" name="Avaliações" stroke="#ba9863" strokeWidth={3} dot={{r:3}} connectNulls={false}/></ComposedChart></ResponsiveContainer>:<div className="a-chart-empty">Registre pelo menos dois períodos para visualizar a evolução.</div>}</div><div className="a-key"><span><i style={{background:'#315c42'}}/>Scans</span><span><i style={{background:'#ba9863'}}/>Avaliações informadas</span></div></section>
     <div className="a-sidegrid">
      <section className="a-card" id="metas"><div className="a-card-title"><div><h3>Metas de reputação</h3><p>Acompanhamento do total acumulado no Google</p></div><Target color="#497757" size={20}/></div><div className="a-goals">{goals.map(g=><div className="a-goal" key={g.target}><div className="a-goal-top"><strong>{fmt(g.target)} avaliações</strong><span>{latest?pct(g.percentage):'Sem base'}</span></div><div className="a-progress"><span style={{width:g.percentage+'%'}}/></div><small>{g.remaining===null?'Informe o total Google para calcular':g.remaining===0?'Meta alcançada':'Faltam '+fmt(g.remaining)+' avaliações'}</small></div>)}</div><p className="a-note">Total Google registrado: {latest?fmt(Number(latest.total)):'não informado'} · Nota: {lastRating}</p></section>
-     <section className="a-card a-source"><span className="a-src-status">{googleSummary?'Google conectado':'Google Business Profile'}</span><h3>Google Reviews</h3><p>Resumo ao vivo da conta Garden Café e Gastronomia. O acesso é protegido pelo login do Garden Studio; o segredo OAuth permanece no serviço privado.</p>{googleSummary&&<p style={{marginTop:14}}><strong>{fmt(googleSummary.reviewCount)}</strong> avaliações · nota média <strong>{googleSummary.averageRating?.toLocaleString('pt-BR',{maximumFractionDigits:2})||'—'}</strong>{googleSummary.newestReviewTime&&<> · avaliação mais recente {new Date(googleSummary.newestReviewTime).toLocaleDateString('pt-BR')}</>}</p>}<button className="a-btn a-btn-outline" type="button" onClick={()=>void refreshGoogleSummary()}>{googleSummary?'Atualizar avaliações':'Conectar e consultar avaliações'}</button>{googleStatus&&<p className="a-note" role="status">{googleStatus}</p>}<p style={{marginTop:14}}>A coleta de scans continua usando os registros e relatórios existentes.</p></section>
+     <section className="a-card a-source"><span className="a-src-status">{googleSummary?'Resumo atualizado':'Google Business Profile'}</span><h3>Google Reviews</h3><p>Resumo atualizado diariamente pelo GitHub Actions. O site publica apenas contagem, média e data da avaliação mais recente; as credenciais OAuth ficam nos secrets do repositório.</p>{googleSummary&&<p style={{marginTop:14}}><strong>{fmt(googleSummary.reviewCount)}</strong> avaliações · nota média <strong>{googleSummary.averageRating?.toLocaleString('pt-BR',{maximumFractionDigits:2})||'—'}</strong>{googleSummary.newestReviewTime&&<> · avaliação mais recente {new Date(googleSummary.newestReviewTime).toLocaleDateString('pt-BR')}</>}</p>}<button className="a-btn a-btn-outline" type="button" onClick={()=>void refreshGoogleSummary()}>Consultar último resumo</button>{googleStatus&&<p className="a-note" role="status">{googleStatus}</p>}<p style={{marginTop:14}}>A coleta de scans continua usando os registros e relatórios existentes.</p></section>
     </div>
    </div>
    <div className="a-pagehead" id="registros"><div><span className="a-eyebrow">Controle operacional</span><h2>Registre. Compare. Evolua.</h2><p className="a-sub">Os dados são salvos no Firebase da sua conta, separados do Marketing Control.</p></div></div>

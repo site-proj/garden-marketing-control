@@ -2,6 +2,8 @@ name: Publish Garden Marketing Control
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '17 9 * * *'
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,6 +22,12 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Fetch Google Business Profile summary
+        run: node scripts/fetch-google-business-profile.mjs
+        env:
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
       - name: Build static website
         run: npm run build
         env:
@@ -29,7 +37,6 @@ jobs:
           NEXT_PUBLIC_FIREBASE_APP_ID: "1:586952652575:web:7341c8bfcc0c7a2a0de22a"
           NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: "586952652575"
           NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: "garden-marketing-control.firebasestorage.app"
-          NEXT_PUBLIC_GBP_API_URL: ${{ vars.NEXT_PUBLIC_GBP_API_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
