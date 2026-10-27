@@ -49,9 +49,11 @@ function parseCsv(text:string){
 export default function AnalyticsPage(){
  const [user,setUser]=useState<User|null>(null),[checked,setChecked]=useState(false),[entries,setEntries]=useState<Entry[]>([]);
  const [form,setForm]=useState<FormData>(emptyForm),[sync,setSync]=useState('Conectando…'),[saving,setSaving]=useState(false);
+ const [isScrolled,setIsScrolled]=useState(false);
  const [days,setDays]=useState(30),[csvResult,setCsvResult]=useState<{scans:number,rows:number}|null>(null),[csvMessage,setCsvMessage]=useState('');
  const [googleSummary,setGoogleSummary]=useState<{reviewCount:number,averageRating:number|null,newestReviewTime:string|null,fetchedAt:string}|null>(null),[googleStatus,setGoogleStatus]=useState('');
  const [futureRating,setFutureRating]=useState('5'),[monthlyReviews,setMonthlyReviews]=useState('30');
+ useEffect(()=>{const updateScroll=()=>setIsScrolled(window.scrollY>96);updateScroll();window.addEventListener('scroll',updateScroll,{passive:true});return()=>window.removeEventListener('scroll',updateScroll)},[]);
  useEffect(()=>{if(!auth){setChecked(true);setSync('Firebase não configurado');return;}return onAuthStateChanged(auth,u=>{setUser(u);setChecked(true)})},[]);
  useEffect(()=>{if(!user||!db)return;setSync('Carregando');return onSnapshot(doc(db,'users',user.uid,'data','analytics'),snapshot=>{const value=snapshot.data();setEntries(Array.isArray(value?.entries)?value.entries:[]);setSync('Sincronizado')},()=>setSync('Falha na sincronização — verifique o acesso'))},[user]);
  const ordered=useMemo(()=>calculated(entries),[entries]);
@@ -100,7 +102,7 @@ export default function AnalyticsPage(){
   {label:'Relação estimada',value:conversion,desc:'Avaliações / scans comparáveis',Icon:Activity},
   {label:'Scans por avaliação',value:ratio!==null&&Number.isFinite(ratio)&&reviewCount>0?ratio.toLocaleString('pt-BR',{maximumFractionDigits:1}):'—',desc:'Indicador indicativo, sem atribuição',Icon:BarChart3}
  ];
- return <div className="analytics-root">
+ return <div className={'analytics-root'+(isScrolled?' a-is-scrolled':'')}>
   <header className="a-top"><div className="a-top-foliage" aria-hidden="true"><img src={BASE+'analytics/hero-foliage-3d.png'} alt="" /></div><div className="a-top-in">
    <a className="a-brand" href={BASE} aria-label="Garden Studio — página inicial">
     <span className="a-brand-word">GARDEN <span className="a-brand-slash">/</span> <span className="a-brand-studio">STUDIO</span></span>
