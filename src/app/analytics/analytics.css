@@ -302,3 +302,7 @@
 @media(max-width:850px){.a-hero-botanical{right:10px;width:48vw;opacity:.42}}
 @media(max-width:570px){.a-hero-botanical{top:0;right:-8px;width:60vw;height:210px;opacity:.25}}
 @media(prefers-reduced-motion:reduce){.a-leaf-sway{animation:none}}
+.a-hero-botanical{top:-26px;right:clamp(8px,3.2vw,52px);width:min(43vw,570px);height:370px;opacity:.92;filter:drop-shadow(0 22px 34px rgba(0,0,0,.3))}.a-hero-botanical img{display:block;width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;transform-origin:57% 82%;animation:a-botanical-breeze 8.5s ease-in-out infinite}@keyframes a-botanical-breeze{0%,100%{transform:perspective(950px) rotateY(-2deg) rotateZ(-.7deg) translate3d(0,0,0)}50%{transform:perspective(950px) rotateY(3deg) rotateZ(1.2deg) translate3d(0,-5px,0)}}
+@media(max-width:850px){.a-hero-botanical{top:-5px;right:-12px;width:50vw;height:290px;opacity:.72}}
+@media(max-width:570px){.a-hero-botanical{top:0;right:-22px;width:62vw;height:225px;opacity:.37}}
+@media(prefers-reduced-motion:reduce){.a-hero-botanical img{animation:none}}
