@@ -309,3 +309,7 @@
 .analytics-root{overflow-x:clip}.a-hero{overflow:visible;isolation:auto}.a-hero:before,.a-hero:after{z-index:0}.a-hero-botanical{top:-84px;right:clamp(0px,2.5vw,38px);width:min(49vw,660px);height:430px;z-index:4;opacity:.96}.a-kpis{z-index:2}
 @media(max-width:850px){.a-hero-botanical{top:14px;right:-20px;width:55vw;height:355px;z-index:1;opacity:.48}}
 @media(max-width:570px){.a-hero-botanical{top:24px;right:-32px;width:75vw;height:290px;z-index:1;opacity:.3}}
+.a-top-foliage{position:absolute;top:-10px;right:clamp(0px,2.5vw,38px);width:min(49vw,660px);height:430px;z-index:1;clip-path:inset(10px 0 calc(100% - 84px) 0);opacity:.74;pointer-events:none;filter:drop-shadow(0 8px 15px rgba(0,0,0,.25))}.a-top-foliage img{display:block;width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;transform-origin:57% 82%;animation:a-botanical-breeze 8.5s ease-in-out infinite}.a-top-in{position:relative;z-index:2}
+@media(max-width:850px){.a-top-foliage{top:-7px;right:-20px;width:55vw;height:355px;clip-path:inset(7px 0 calc(100% - 70px) 0);opacity:.38}}
+@media(max-width:570px){.a-top-foliage{right:-32px;width:45vw;height:300px;clip-path:inset(7px 0 calc(100% - 60px) 0);opacity:.3}}
+@media(prefers-reduced-motion:reduce){.a-top-foliage img{animation:none}}

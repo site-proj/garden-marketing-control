@@ -101,7 +101,7 @@ export default function AnalyticsPage(){
   {label:'Scans por avaliação',value:ratio!==null&&Number.isFinite(ratio)&&reviewCount>0?ratio.toLocaleString('pt-BR',{maximumFractionDigits:1}):'—',desc:'Indicador indicativo, sem atribuição',Icon:BarChart3}
  ];
  return <div className="analytics-root">
-  <header className="a-top"><div className="a-top-in">
+  <header className="a-top"><div className="a-top-foliage" aria-hidden="true"><img src={BASE+'analytics/hero-foliage-3d.png'} alt="" /></div><div className="a-top-in">
    <a className="a-brand" href={BASE} aria-label="Garden Studio — página inicial">
     <span className="a-brand-word">GARDEN <span className="a-brand-slash">/</span> <span className="a-brand-studio">STUDIO</span></span>
     <span className="a-brand-caption">CENTRAL DE INTELIGÊNCIA</span>
