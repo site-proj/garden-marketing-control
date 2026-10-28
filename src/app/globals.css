@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* Garden Studio cover typography and 15-second motion intro */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 .garden-cover,.garden-cover button,.garden-cover a{font-family:'Space Grotesk',Arial,sans-serif}
 .garden-intro{position:fixed;inset:0;z-index:200;background:#10271b;color:#e6eddf;overflow:hidden;font-family:'Space Grotesk',sans-serif;animation:none}
 .gi-grid{position:absolute;inset:-25%;background-image:linear-gradient(#c8d9c310 1px,transparent 1px),linear-gradient(90deg,#c8d9c310 1px,transparent 1px);background-size:75px 75px;transform:rotate(-13deg) scale(1.3);animation:gi-grid 15s linear both}
@@ -439,3 +439,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .garden-cover h1{font-weight:700 !important;letter-spacing:-.075em !important}
 .garden-cover h1 em{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700 !important;font-style:normal !important}
 .gi-stage strong,.gi-stage strong em{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700;font-style:normal}
+/* Refined continuous motion and a compact data moment in the 15-second intro. */
+.gi-stage{transform-style:preserve-3d;perspective:1200px;will-change:opacity,clip-path,transform}
+.gi-stage-three strong{align-self:flex-start;margin-left:clamp(28px,9vw,140px);text-align:left;transform:rotateY(8deg)}
+.gi-data-card{position:absolute;right:clamp(24px,9vw,132px);top:50%;width:min(320px,28vw);padding:22px 20px;border:1px solid #c6d2be42;background:#1c3426;box-shadow:12px 14px 0 #0b1b10;transform:translateY(-50%) rotateY(-12deg) rotateX(3deg);text-align:left;animation:gi-data-in 15s both}
+.gi-data-head,.gi-data-foot{display:flex;justify-content:space-between;align-items:center;gap:9px;font-size:7px;letter-spacing:.13em;color:#c6d2be9c}.gi-data-head span:last-child{color:#d9c28c}
+.gi-data-value{margin:24px 0 14px;color:#c6d2be;font-size:64px;line-height:.9;letter-spacing:-.09em}.gi-data-value small{color:#d9c28c;font-size:20px;letter-spacing:0}
+.gi-data-bars{height:58px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px;align-items:end}.gi-data-bars i{height:var(--bar-height);background:#c6d2be;transform-origin:bottom;animation:gi-bar-grow .8s cubic-bezier(.16,1,.3,1) both}.gi-data-bars i:last-child{background:#d9c28c}
+.gi-data-foot{margin-top:15px;color:#c6d2be80;font-size:6px}
+@keyframes gi-s1{0%,1%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(2%) rotateY(5deg) scale(.98)}4%,18%{opacity:1;clip-path:inset(0);transform:translateX(0) rotateY(0) scale(1)}23%{opacity:1;clip-path:inset(0 0 0 100%);transform:translateX(-2%) rotateY(-4deg) scale(.99)}24%,100%{opacity:0;clip-path:inset(0 0 0 100%)}}
+@keyframes gi-s2{0%,21%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(2%) rotateY(5deg) scale(.98)}26%,44%{opacity:1;clip-path:inset(0);transform:translateX(0) rotateY(0) scale(1)}49%{opacity:1;clip-path:inset(0 0 100%);transform:translateY(-2%) rotateX(-5deg)}50%,100%{opacity:0;clip-path:inset(0 0 100%)}}
+@keyframes gi-s3{0%,46%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(2%) rotateY(5deg) scale(.98)}51%,69%{opacity:1;clip-path:inset(0);transform:translateX(0) rotateY(0) scale(1)}74%{opacity:1;clip-path:inset(0 0 100%);transform:translateY(-2%) rotateX(-5deg)}75%,100%{opacity:0;clip-path:inset(0 0 100%)}}
+@keyframes gi-s4{0%,71%{opacity:0;clip-path:inset(100% 0 0);transform:translateY(2%) rotateX(-5deg) scale(.99)}77%{opacity:1;clip-path:inset(0);transform:translateY(0) rotateX(0) scale(1)}100%{opacity:1;clip-path:inset(0);transform:translateY(0) rotateX(0) scale(1)}}
+@keyframes gi-data-in{0%,47%{opacity:0;transform:translate(4%,-50%) rotateY(-22deg) rotateX(5deg)}51%,69%{opacity:1;transform:translate(0,-50%) rotateY(-12deg) rotateX(3deg)}74%,100%{opacity:0;transform:translate(-4%,-50%) rotateY(8deg) rotateX(-3deg)}}
+@keyframes gi-bar-grow{from{transform:scaleY(.05)}to{transform:scaleY(1)}}
+@media(max-width:760px){.gi-stage-three strong{align-self:center;margin:0 0 23vh;text-align:center;font-size:clamp(50px,12vw,84px)!important;transform:none}.gi-data-card{top:auto;bottom:10vh;left:50%;right:auto;width:min(390px,86vw);padding:14px 16px;transform:translate(-50%,0);box-shadow:7px 8px 0 #0b1b10}.gi-data-value{margin:12px 0 9px;font-size:46px}.gi-data-bars{height:36px;gap:4px}.gi-data-foot{margin-top:9px}.gi-tracks{opacity:.25}}
