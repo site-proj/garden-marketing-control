@@ -1,0 +1,169 @@
+.align-root {
+  --surface:#fffefa;
+  --border:#e5e4da;
+  line-height:1.6}
+.align-root .align-heading {
+  padding:28px;
+  border:1px solid #dedfd1;
+  border-radius:22px;
+  background:radial-gradient(ellipse at top right,#dfe7d678,transparent 65%),#f5f4ed;
+  gap:24px!important;
+  margin-bottom:28px!important}
+.align-heading h1 {
+  font-size:clamp(28px,4vw,40px)!important;
+  color:#284832;
+  line-height:1.2}
+.align-heading p {
+  font-size:14px;
+  margin-top:10px}
+.align-heading>div>div {
+  font-size:10px!important;
+  letter-spacing:.14em!important}
+.align-root button {
+  transition:background .2s,border-color .2s,box-shadow .2s}
+.align-root button:hover {
+  border-color:#a6b398!important;
+  box-shadow:0 5px 18px #2335250a}
+.align-root .align-primary {
+  background:#284832!important;
+  color:#fffefa!important;
+  border-color:#284832!important}
+.align-root .align-stat {
+  box-shadow:0 5px 20px #24332605;
+  padding:22px!important}
+.align-stat strong {
+  font-size:34px!important;
+  font-weight:600;
+  color:#315b3f}
+.align-stat.is-overdue strong {
+  color:#a35953}
+.align-stat>div {
+  opacity:1!important;
+  color:#727c70}
+.align-root .align-grid {
+  gap:16px!important;
+  margin-bottom:24px!important}
+.align-root .align-fields {
+  gap:20px!important;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))!important}
+.align-root label>span {
+  font-size:12px!important;
+  font-weight:600;
+  opacity:1!important;
+  color:#62715e}
+.align-root input:not([type=checkbox]),.align-root textarea,.align-root select {
+  background:#fbfaf6!important;
+  border-color:#e2e2d8!important;
+  border-radius:10px!important;
+  min-height:44px;
+  line-height:1.5}
+.align-root textarea {
+  resize:vertical;
+  min-height:110px}
+.align-root .align-meeting-card {
+  position:relative;
+  padding:24px!important;
+  box-shadow:0 5px 20px #24332605}
+.align-meeting-card:hover {
+  background:#f7f8f0!important}
+.align-root .align-meeting-meta {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#7c7155;
+  opacity:1!important}
+.align-meeting-card h3 {
+  color:#2c4230;
+  font-size:20px!important}
+.align-meeting-card p {
+  line-height:1.7}
+.align-card-status {
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  padding:5px 10px;
+  border-radius:20px;
+  background:#edf1e7;
+  color:#557250;
+  font-size:11px;
+  margin-top:16px}
+.align-section-title {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  font-size:20px;
+  margin-bottom:24px;
+  color:#2c4230}
+.align-badge {
+  padding:4px 10px;
+  background:#edf1e7;
+  color:#557250;
+  border-radius:20px;
+  font:600 11px/1.6 Arial,sans-serif;
+  letter-spacing:0}
+.align-root .align-topic {
+  padding:24px 0!important}
+.align-empty {
+  padding:16px 0;
+  color:#7c8577;
+  font-size:13px}
+.align-root .align-action {
+  background:#fafaf5;
+  border-color:#e5e4da!important;
+  border-left:3px solid #c6a36a!important;
+  border-radius:14px!important;
+  padding:20px!important}
+.align-action-status {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:#8e7546;
+  margin-bottom:16px;
+  font-weight:600}
+.align-root .align-action[data-status='Concluída'] {
+  border-left-color:#62805b!important}
+.align-action[data-status='Concluída'] .align-action-status {
+  color:#557250}
+.align-root .align-action[data-status='Bloqueada'] {
+  border-left-color:#a35953!important}
+.align-action[data-status='Bloqueada'] .align-action-status {
+  color:#a35953}
+@media(max-width:600px) {
+  .align-root .align-heading {
+  padding:22px!important;
+  align-items:flex-start!important}
+.align-root section {
+  padding:20px!important}
+.align-root .align-grid {
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important}
+.align-root .align-stat {
+  padding:16px!important}
+.align-root .align-fields {
+  grid-template-columns:minmax(0,1fr)!important}
+.align-root .align-meeting-card {
+  padding:20px!important}
+.align-root button {
+  min-height:44px}
+.align-heading>div:last-child {
+  width:100%}
+.align-heading>div:last-child button {
+  width:100%}
+}
+@media print {
+  .align-root {
+  max-width:none!important}
+.align-root section {
+  box-shadow:none!important}
+.align-root .align-action {
+  break-inside:avoid}
+.align-root textarea {
+  min-height:120px}
+}
+@media(prefers-reduced-motion:reduce) {
+  .align-root button {
+  transition:none}
+}
+

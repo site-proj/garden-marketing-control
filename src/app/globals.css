@@ -439,3 +439,82 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .garden-cover h1{font-weight:700 !important;letter-spacing:-.075em !important}
 .garden-cover h1 em{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700 !important;font-style:normal !important}
 .gi-stage strong,.gi-stage strong em{font-family:'Space Grotesk',Arial,sans-serif !important;font-weight:700;font-style:normal}
+
+/* Garden Control: grouped workspace and independent Studio modules. */
+.sidebar {
+  overflow-y:auto}
+.main-nav {
+  gap:14px}
+.garden-control-group {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:14px 10px;
+  border:1px solid #ffffff18;
+  border-radius:16px;
+  background:#ffffff03}
+.nav-control-title {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:2px 4px 6px;
+  color:#d9c28c;
+  font-size:13px;
+  letter-spacing:.01em!important}
+.main-nav .garden-control-group>button,.main-nav .studio-module-link,.main-nav .studio-analytics-link {
+  margin:0;
+  min-height:46px;
+  height:auto;
+  padding:13px 14px;
+  border:1px solid #ffffff17;
+  border-radius:11px;
+  box-shadow:none;
+  background:#ffffff05;
+  color:#d5dece;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none}
+.main-nav svg {
+  flex-shrink:0}
+.main-nav .garden-control-group>button:hover,.main-nav .studio-module-link:hover,.main-nav .studio-analytics-link:hover {
+  background:#ffffff0c;
+  border-color:#bca36b66;
+  color:#fff2ce}
+.main-nav .garden-control-group>button.selected,.main-nav .studio-module-link.selected,.main-nav .nav-group-toggle.has-active {
+  background:#304735;
+  border-color:#bca36b66;
+  color:#f6ecd3;
+  box-shadow:inset 3px 0 #c6a36a}
+.main-nav .studio-module-link {
+  order:initial}
+.main-nav .studio-analytics-link {
+  order:initial}
+.garden-control-group .nav-submenu {
+  order:initial}
+.garden-control-group .nav-chevron {
+  margin-left:auto}
+.garden-control-group .nav-submenu-inner button {
+  margin:0;
+  padding:12px;
+  min-height:44px;
+  height:auto}
+.garden-control-group .nav-submenu-inner {
+  display:flex;
+  flex-direction:column;
+  gap:12px}
+.garden-control-group .nav-caption {
+  margin:0;
+  padding:4px 12px}
+.garden-control-group .nav-caption-gap {
+  margin-top:8px}
+.side-bottom {
+  padding-top:24px}
+
+.garden-control-group {
+  flex-shrink:0}
+.main-nav .garden-control-group>button {
+  order:initial}
+.main-nav>.studio-module-link,.main-nav>.studio-analytics-link {
+  flex-shrink:0}
