@@ -1,0 +1,131 @@
+[
+  {
+    "id": "garden-align-2026-10-30",
+    "title": "Alinhamento Estratégico de Marketing e Comunicação",
+    "date": "2026-10-30",
+    "location": "Barreto Imóveis",
+    "category": "Marketing e Estratégia",
+    "participants": "",
+    "objective": "Avaliar marketing digital, posicionamento, investimento e encaminhamentos operacionais.",
+    "summary": "Direcionar a comunicação para almoço, jantar, happy hour e bebidas. Otimizar campanhas e ajustar canais digitais. Investimento pago: R$ 3.000/mês (Google Ads R$ 1.000, Meta Ads R$ 2.000). Crédito promocional separado: R$ 3.500 no Google apenas para geração de demanda.",
+    "topics": [
+      {
+        "title": "Investimentos em mídia",
+        "discussion": "Google Ads R$ 1.000/mês e Meta Ads R$ 2.000/mês. Crédito extra de R$ 3.500 no Google exclusivamente para campanhas de geração de demanda.",
+        "decision": "Manter registro dos investimentos; Fernando lançará as despesas de mídia em marketing."
+      },
+      {
+        "title": "Facebook e Instagram",
+        "discussion": "Facebook teve aumento aproximado de 200% nas impressões no mês eleitoral. Instagram ganhou seguidores, mas perdeu impressões.",
+        "decision": "Manter integração das redes e estimular engajamento via anúncios para recuperar alcance orgânico."
+      },
+      {
+        "title": "Mudança de foco comercial",
+        "discussion": "Sem funcionamento à tarde em dias úteis; café da manhã de terça a sexta e brunch retirados da operação. Bebidas apresentam maior rentabilidade.",
+        "decision": "Priorizar almoço, jantar, happy hour e bebidas."
+      },
+      {
+        "title": "Público das campanhas",
+        "discussion": "Público acima de 65 anos apresenta alto engajamento, mas deixou de ser prioridade.",
+        "decision": "Segmentar de 25 a 65 anos, com interesses em bebidas e mais fotos de drinks."
+      },
+      {
+        "title": "Site e Google",
+        "discussion": "Garden ainda aparece como cafeteria nas recomendações do Google e de IAs; horários e descrição de estacionamento confundem.",
+        "decision": "Revisar classificação de cafeteria no site, Google e FAQ, mantendo informação de que serve café; corrigir horários e estacionamento."
+      },
+      {
+        "title": "Cardápio digital",
+        "discussion": "Faltam fotos de produtos/meias porções; itens descontinuados estão com valor zero; drink aparece pequeno na foto.",
+        "decision": "Incluir fotos, reutilizar a imagem da porção para meia porção, ocultar itens fora de linha sem excluir possibilidade de venda e refazer foto do drink."
+      },
+      {
+        "title": "Avaliações Google",
+        "discussion": "QR Codes individuais são comparados aos horários das avaliações. Segundo Rodrigo, avaliações com nome do funcionário pesariam menos; afirmação não verificada.",
+        "decision": "Orientar avaliação da experiência no Garden sem solicitar menção ao garçom; manter medição por QR Code."
+      },
+      {
+        "title": "Engajamento orgânico",
+        "discussion": "Clientes marcam menos o Garden. Marco filmava salão cheio; Rodrigo sugere registros espontâneos publicados em tempo real.",
+        "decision": "Fábio gravará horários de pico sem focar rostos nem crianças. Considerar lives curtas e materiais de mesa incentivando marcações."
+      },
+      {
+        "title": "Eventos de fim de ano",
+        "discussion": "Campanhas precisam de período de aprendizado.",
+        "decision": "Iniciar campanhas aproximadamente 40 dias antes de cada evento."
+      }
+    ],
+    "actions": [
+      {
+        "id": "garden-align-action-1",
+        "title": "Orientar garçons a solicitar avaliações do Garden sem citar seus nomes",
+        "owner": "A definir",
+        "due": "",
+        "status": "Pendente",
+        "priority": "Não definida",
+        "notes": ""
+      },
+      {
+        "id": "garden-align-action-2",
+        "title": "Retirar classificação de cafeteria do site, Google e FAQ; Fábio define nomenclatura para café da manhã e brunch",
+        "owner": "Rodrigo e Fábio",
+        "due": "",
+        "status": "Pendente",
+        "priority": "Não definida",
+        "notes": ""
+      },
+      {
+        "id": "garden-align-action-3",
+        "title": "Corrigir horários e texto sobre estacionamento no site",
+        "owner": "Rodrigo",
+        "due": "",
+        "status": "Pendente",
+        "priority": "Não definida",
+        "notes": ""
+      },
+      {
+        "id": "garden-align-action-4",
+        "title": "Ajustar segmentação das campanhas para 25–65 anos e interesses em bebidas",
+        "owner": "Rodrigo",
+        "due": "",
+        "status": "Pendente",
+        "priority": "Não definida",
+        "notes": ""
+      },
+      {
+        "id": "garden-align-action-5",
+        "title": "Filmar e publicar conteúdo do salão em tempo real nos horários de pico (ação contínua)",
+        "owner": "Fábio",
+        "due": "",
+        "status": "Pendente",
+        "priority": "Não definida",
+        "notes": ""
+      },
+      {
+        "id": "garden-align-action-6",
+        "title": "Atualizar cardápio digital: fotos, itens fora de linha e imagem do drink",
+        "owner": "A definir",
+        "due": "",
+        "status": "Pendente",
+        "priority": "Não definida",
+        "notes": ""
+      },
+      {
+        "id": "garden-align-action-7",
+        "title": "Lançar despesas de Google e Meta Ads nas despesas de marketing",
+        "owner": "Fernando",
+        "due": "",
+        "status": "Pendente",
+        "priority": "Não definida",
+        "notes": ""
+      }
+    ],
+    "pending": [
+      "Definir responsáveis pelas orientações de avaliações e pelos ajustes do cardápio digital.",
+      "Estabelecer prazos para ações sem data definida.",
+      "Definir nomenclatura comercial das referências a café da manhã e brunch.",
+      "Avaliar lives curtas e materiais de mesa incentivando marcações."
+    ],
+    "archived": false
+  }
+]
